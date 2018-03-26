@@ -1,0 +1,36 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+/live-backend-view/node_modules/
+/online-exam.iml
+/mvnw.cmd
+/mvnw
+/comm-domain/target/
+/comm-domain/comm-domain.iml
+/.mvn/
+/comm-utils/target/
+/comm-utils/comm-utils.iml
+/live-backend-view/.idea/
+/online-examing-api/target/
