@@ -29,7 +29,7 @@ public class PaperController {
     /**
      * 添加、更新题目
      */
-    @PostMapping(Routes.PAPER_ADDQUESTION)
+    @PostMapping(Routes.PAPER_ADD_QUESTION)
     public RestResult addQuestion(@RequestBody PaperQuestion paperDetail){
         RestDoing restDoing = restResult ->{
             restResult.data = paperService.addQuestion(paperDetail);
@@ -40,7 +40,7 @@ public class PaperController {
     /**
      * 删除题目
      */
-    @PostMapping(Routes.PAPER_DELETEQUESTION)
+    @PostMapping(Routes.PAPER_DELETE_QUESTION)
     public RestResult deleteQuestion(@RequestParam(value="id") Long  id){
         RestDoing restDoing = restResult ->{
             restResult.data = paperService.deleteQuestion(id);
@@ -51,7 +51,7 @@ public class PaperController {
     /**
      * 获取题目的分页列表
      */
-    @GetMapping(Routes.PAPER_GETQUESTIONDLIST)
+    @GetMapping(Routes.PAPER_GET_QUESTIOND_LIST)
     public RestResult getQuestionList(PaperRequestDto paperRequestDto){
         RestDoing restDoing = restResult ->{
             restResult.data = paperService.getPaperList(paperRequestDto);
@@ -62,7 +62,7 @@ public class PaperController {
     /**
      * 获取题目的总数目
      */
-    @GetMapping(Routes.PAPER_GETQUESTIONDSIZE)
+    @GetMapping(Routes.PAPER_GET_QUESTIOND_SIZE)
     public RestResult getQuestionSize(@RequestParam(value = "type")Integer type){
         RestDoing restDoing = restResult ->{
             restResult.data = paperService.getPaperSize(type);
@@ -73,7 +73,7 @@ public class PaperController {
     /**
      * 查找题目
      */
-    @GetMapping(Routes.PAPER_SEARCHQUESTION)
+    @GetMapping(Routes.PAPER_SEARCH_QUESTION)
     public RestResult searchQuestion(PaperRequestDto paperRequestDto){
         RestDoing restDoing = restResult ->{
             restResult.data = paperService.searchQuestion(paperRequestDto);
@@ -85,7 +85,7 @@ public class PaperController {
     *@Description: 更新信息
     *@Date: 2017/12/8
     */
-    @PostMapping(Routes.PAPER_UPDATEQUESTION)
+    @PostMapping(Routes.PAPER_UPDATE_QUESTION)
     public RestResult updateQuestion(@RequestBody PaperRequestDto paperRequestDto){
         RestDoing restDoing = restResult ->{
             String[] id = paperRequestDto.getIds().split(",");

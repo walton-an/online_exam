@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import {getInfo, roomUpdateSelectedComment, updateInfo} from '../../api/api'
+    import {getInfo, updateInfo} from '../../api/api'
     import Util from "../../common/js/util";
     export default {
         data(){

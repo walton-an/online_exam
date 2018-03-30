@@ -18,7 +18,7 @@ public class PaperAnswer extends BaseEntity{
     private List<String> selectAnswers;
     private List<String> tfAnswers;
     private List<String> fullAnswer;
-    private Integer score;
+    private double score;
     private long createTime;
 
     public Long getStuId() {
@@ -61,11 +61,11 @@ public class PaperAnswer extends BaseEntity{
         this.fullAnswer = fullAnswer;
     }
 
-    public Integer getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(double score) {
         this.score = score;
     }
 

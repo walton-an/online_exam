@@ -31,11 +31,15 @@
             return {
                 examPaper: {},
                 allPaper: [],
+                accountNumber: sessionStorage.getItem('accountNumber')==null?localStorage.getItem('accountNumber'):sessionStorage.getItem('accountNumber'),
             };
         },
         methods: {
             getAllPaper: function () {
-                getExamPaper().then(res=>{
+                let para = {
+                    teacherId: this.accountNumber
+                };
+                getExamPaper(para).then(res=>{
                    this.allPaper = res;
                 });
             },

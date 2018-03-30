@@ -17,6 +17,7 @@ public class ExamPaper extends BaseEntity {
     private String endTime;
     private List<PaperQuestion> examQuestion;
     private Integer status; //0代表未考试，1代表已考完
+    private long teacherId; //出题老师
 
     public String getTitle() {
         return title;
@@ -64,5 +65,13 @@ public class ExamPaper extends BaseEntity {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(long teacherId) {
+        this.teacherId = teacherId;
     }
 }

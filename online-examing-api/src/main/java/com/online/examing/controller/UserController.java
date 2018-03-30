@@ -3,7 +3,9 @@ package com.online.examing.controller;
 import com.domain.User;
 import com.online.examing.Routes;
 import com.online.examing.domain.PaperRequestDto;
+import com.online.examing.domain.UserRequestDto;
 import com.online.examing.service.UserService;
+import com.utils.RestCode;
 import com.utils.RestDoing;
 import com.utils.RestResult;
 import org.slf4j.Logger;
@@ -35,9 +37,9 @@ public class UserController {
      * 用户注册
      */
     @PostMapping(Routes.USER_REGISTER)
-    public RestResult register(@RequestBody User user){
+    public RestResult register(@RequestBody UserRequestDto userRequestDto){
         RestDoing restDoing = restResult ->{
-            restResult.data = userService.register(user);
+            restResult.data = userService.register(userRequestDto);
         };
         return restDoing.go(null, logger);
     }
@@ -45,7 +47,7 @@ public class UserController {
     /**
      * 用户更新信息
      */
-    @PostMapping(Routes.USER_UPDATEINFO)
+    @PostMapping(Routes.USER_UPDATE_INFO)
     public RestResult updateInfo(@RequestBody PaperRequestDto paperRequestDto){
         RestDoing restDoing = restResult ->{
             restResult.data = userService.updateInfo(paperRequestDto);
@@ -56,10 +58,21 @@ public class UserController {
     /**
      * 获取用户信息
      */
-    @GetMapping(Routes.USER_GETINFO)
+    @GetMapping(Routes.USER_GET_INFO)
     public RestResult getInfo(User user){
         RestDoing restDoing = restResult ->{
             restResult.data = userService.getInfo(user);
+        };
+        return restDoing.go(null, logger);
+    }
+
+    /**
+     * 获取所有用户信息
+     */
+    @GetMapping(Routes.USER_GET_ALL_INFO)
+    public RestResult getInfo(UserRequestDto user){
+        RestDoing restDoing = restResult ->{
+            restResult.data = userService.getAllInfo(user);
         };
         return restDoing.go(null, logger);
     }
@@ -74,5 +87,41 @@ public class UserController {
         };
         return restDoing.go(null, logger);
     }
+
+    /**
+     * 删除用户
+     */
+    @PostMapping(Routes.USER_DELETE)
+    public RestResult delete(@RequestBody UserRequestDto userRequestDto){
+        RestDoing restDoing = restResult ->{
+             userService.delete(userRequestDto);
+             restResult.data = RestCode.CD1;
+        };
+        return restDoing.go(null, logger);
+    }
+
+    /**
+     * 删除用户
+     */
+    @PostMapping(Routes.USER_UPDATE_STATUS)
+    public RestResult updateStatus(@RequestBody UserRequestDto userRequestDto){
+        RestDoing restDoing = restResult ->{
+            userService.updateStatus(userRequestDto);
+            restResult.data = RestCode.CD1;
+        };
+        return restDoing.go(null, logger);
+    }
+
+    /**
+     * 查看用户名是否存在
+     */
+    @GetMapping(Routes.USER_CHECK_NUMBER)
+    public RestResult checkExist(UserRequestDto userRequestDto){
+        RestDoing restDoing = restResult ->{
+            restResult.data = userService.ifExist(userRequestDto);
+        };
+        return restDoing.go(null, logger);
+    }
+
 
 }

@@ -18,5 +18,7 @@ public interface ExamRepository extends MongoRepository<ExamPaper,Long>{
 
     public List<ExamPaper> findByExamClassExists(String examClass);
 
+    public List<ExamPaper> findByTeacherId(long teacherId);
+
     public List<ExamPaper> findByExamClassContains(String ca);
 }

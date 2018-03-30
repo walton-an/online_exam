@@ -15,8 +15,19 @@ public class User extends BaseEntity{
     private Long accountNumber;
     private String name;
     private String password;
-    private Integer type;   //0学生、1教师
+    private Integer type;   //0学生、1教师、2管理员
     private List<ManagerClass> managerClasses;
+    private long createTime;
+    private long updateTime;
+    private int status; //0隐藏，1显示
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;
@@ -56,5 +67,21 @@ public class User extends BaseEntity{
 
     public void setManagerClasses(List<ManagerClass> managerClasses) {
         this.managerClasses = managerClasses;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
     }
 }

@@ -3,8 +3,7 @@ import Register from './views/Register.vue'
 import NotFound from './views/404.vue'
 import studentHome from './views/studentHome.vue'
 import teacherHome from './views/teacherHome.vue'
-import anchor from './views/anchor/anchors.vue';
-import participants from './views/participant/participants.vue';
+import adminHome from './views/adminHome.vue'
 //student
 import myExam from './views/student/myExam.vue';
 import myPractice from './views/student/myPractice.vue';
@@ -19,6 +18,9 @@ import editTeacherPSW from './views/teacher/editTeacherPSW.vue';
 import improveTeacherInfo from './views/teacher/improveTeacherInfo.vue';
 import assignPaper from './views/teacher/assignPaper.vue';
 import paperManager from './views/teacher/paperManager.vue';
+//admin
+import addUser from './views/admin/addUser.vue'
+import userManager from './views/admin/userManager.vue'
 
 let routes = [
     //映射登录
@@ -120,6 +122,29 @@ let routes = [
         children: [
             { path: '/improveTeacherInfo', component: improveTeacherInfo,  name: "完善信息"},
             { path: '/editTeacherPSW', component: editTeacherPSW,  name: "修改密码"}
+        ]
+    },
+    //映射管理员界面
+    {
+        path: '/admin',
+        component: adminHome,
+        name: '用户管理',
+        iconCls:'fa el-icon-edit',
+        isAdmin: true,
+        leaf: true,//只有一个节点
+        children: [
+            { path: '/userManager', component: userManager, name: '用户管理' },
+        ]
+    },
+    {
+        path: '/admin',
+        component: adminHome,
+        // name: '添加 / 更新用户',
+        iconCls:'fa fa-file-o',
+        isAdmin: true,
+        leaf: true,//只有一个节点
+        children: [
+            { path: '/addUser', component: addUser, name: '添加 / 更新用户' },
         ]
     },
     {

@@ -115,6 +115,8 @@
                     return;
                 }
                 if(new Date().getTime() > endTime ){
+                    this.paperId = $.extend(true, {}, row).idStr;
+                    this.submitPaper();
                     this.$message({
                         message: '考试时间已结束，下次请注意',
                         type: 'error'
@@ -181,10 +183,6 @@
                 };
                 getInfo(para).then(res=>{
                     this.studentInfo = res.data;
-                });
-
-                setTimeout(() => {
-                    console.log(this.studentInfo.managerClasses+"aads")
                     if(!_.isUndefined(this.studentInfo.managerClasses)) {
                         let paperPara = {
                             stuId: this.accountNumber,
@@ -196,15 +194,7 @@
                     }else {
                         this.allPaper = [];
                     }
-                }, 200);
-            },
-            getStudentInfo: function () {
-                let para = {
-                    accountNumber: this.accountNumber
-                };
-                getInfo(para).then(res=>{
-                    this.studentInfo = res.data;
-                })
+                });
             },
             submitPaper: function () {
                 this.minutes = 0;
@@ -247,7 +237,6 @@
             }
         },
         mounted(){
-            this.getStudentInfo();
             this.getStudentPaper();
         },
     }

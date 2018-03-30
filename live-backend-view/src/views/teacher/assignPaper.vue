@@ -74,37 +74,10 @@
                 <el-button type="primary" @click="confirmSelectQuestions">确 定</el-button>
             </div>
         </el-dialog>
-        <!--<el-dialog title="生成试卷" :visible.sync="createPaperVisible">-->
-            <!--<el-form ref="exam"  :rules="examRules" :model="examDetail"  label-width="100px" class="demo-ruleForm">-->
-                <!--<el-form-item label="考试班级：" >-->
-                    <!--<el-tag v-for="examClass in checkedClass" :key="examClass" closable @close="handleCloseClass(examClass)">-->
-                        <!--{{examClass}}-->
-                    <!--</el-tag>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="考试时间：" >-->
-                    <!--{{examTimeShow}}-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="考试题目：" >-->
-                    <!--<el-table :data="selectQuestion" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" ref="examRef" >-->
-                        <!--<el-table-column property="type" sortable label="题目类型" width="150" :formatter="formatQuestionType"></el-table-column>-->
-                        <!--<el-table-column property="title" label="题目" width="200"></el-table-column>-->
-                        <!--<el-table-column property="selectionA" label="选项A"></el-table-column>-->
-                        <!--<el-table-column property="selectionB" label="选项B"></el-table-column>-->
-                        <!--<el-table-column property="selectionC" label="选项C"></el-table-column>-->
-                        <!--<el-table-column property="selectionD" label="选项D"></el-table-column>-->
-                    <!--</el-table>-->
-                <!--</el-form-item>-->
-            <!--</el-form>-->
-            <!--<div slot="footer" class="dialog-footer">-->
-                <!--<el-button @click="cancelCreatePaper">取 消</el-button>-->
-                <!--<el-button type="primary" @click="confirmCreatePaper">确 定</el-button>-->
-            <!--</div>-->
-        <!--</el-dialog>-->
     </section>
 </template>
 <script>
     import util from '../../common/js/util'
-    import {} from '../../api/api'
     import {getInfo} from "../../api/api";
     import {getQuestionList} from "../../api/api";
     import {getExamPaperById} from "../../api/api";
@@ -117,7 +90,7 @@
                 selectQuestionVisible: false,
                 examTimeVisiable: false,
                 createPaperVisible: false,
-                accountNumber: sessionStorage.getItem('accountNumber')==null?localStorage.getItem('accountNumber'):sessionStorage.getItem('accountNumber'),
+                accountNumber: sessionStorage.getItem('accountNumber'),
                 managerClass: {},
                 myClass: [],
                 checkedClass: [],
@@ -244,6 +217,7 @@
                     beginTime: (new Date(this.examTime[0])).getTime(),
                     endTime: (new Date(this.examTime[1])).getTime(),
                     examQuestion: this.examForm.selectQuestion,
+                    teacherId: this.accountNumber,
                 };
                 createOrUpdatePaper(para).then(res=>{
                     this.$message({

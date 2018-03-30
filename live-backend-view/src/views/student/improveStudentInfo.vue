@@ -11,7 +11,7 @@
                     <el-tag type="info">{{name}}</el-tag>
                 </el-form-item>
                 <el-form-item label="班级：">
-                    <el-tag type="info" v-for="grade1 in managerInfo.managerClasses">{{grade1.grade}}届{{grade1.school}}学院{{grade1.major}}</el-tag>
+                    <el-tag closable type="info" v-for="grade1 in managerInfo.managerClasses">{{grade1.grade}}届{{grade1.school}}学院{{grade1.major}}</el-tag>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -23,7 +23,7 @@
                         <el-option v-for="item in 2017-1990" :label="(item+1990)" :value="item+1990" :key="item+1990"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="学院：">
+                <el-form-item label="学院：" prop="school">
                     <el-select clearable v-model="studentInfo.school" @change="getSelectMajor">
                         <el-option v-for="item in school" :key="item.idStr" :label="item.title" :value="item.idStr"></el-option>
                     </el-select>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import {getInfo, roomUpdateSelectedComment, updateInfo} from '../../api/api'
+    import {getInfo, updateInfo} from '../../api/api'
     import Util from "../../common/js/util";
     export default {
         data(){
@@ -63,8 +63,8 @@
                 managerInfo: {},
                 unable: true,
                 grade: '',
-                accountNumber: sessionStorage.getItem('accountNumber')==null?localStorage.getItem('accountNumber'):sessionStorage.getItem('accountNumber'),
-                name: sessionStorage.getItem('name')==null?localStorage.getItem('name'):sessionStorage.getItem('name'),
+                accountNumber: sessionStorage.getItem('accountNumber'),
+                name: sessionStorage.getItem('name'),
                 studentInfoRules: {
                     school: [
                         { type:"integer", required: true, message: '请选择学院', trigger: 'change' }
@@ -133,22 +133,6 @@
                         });
                     }
                 });
-            },
-            //设置评论状态
-            setStatus: function () {
-                let para = {
-                    status: this.updateStatus,
-                    ids: this.sels.map(item => item.idStr).toString(),
-                };
-                this.listLoading = true;
-                roomUpdateSelectedComment(para).then(()=>{
-                    this.listLoading = false;
-                    this.getCommentData();
-                });
-            },
-            //格式化审核进度
-            formatCommtentCheck: function(row, column) {
-                return row[column.property] == 0 ? '待审核' : '已审核';
             },
             handleChange(value) {
                 console.log(value);

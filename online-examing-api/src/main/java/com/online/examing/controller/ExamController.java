@@ -44,8 +44,8 @@ public class ExamController {
     }
 
     @GetMapping(Routes.EXAM_GET)
-    public List<ExamPaper> getExam(){
-        return examRepository.findAll();
+    public List<ExamPaper> getExam(@RequestParam(value = "teacherId")long teacherId){
+        return examRepository.findByTeacherId(teacherId);
     }
 
     @GetMapping(Routes.EXAM_GET_PAPEER_BY_ID)

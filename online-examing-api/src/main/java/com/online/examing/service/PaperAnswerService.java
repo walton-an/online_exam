@@ -9,7 +9,9 @@ import com.utils.DefaultKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @Author: walton
@@ -29,13 +31,18 @@ public class PaperAnswerService {
     @Autowired
     private DefaultKeyGenerator defaultKeyGenerator ;
 
+    //正则匹配是否为数字
+    Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+    //保留两位小数
+    DecimalFormat df = new DecimalFormat("0.00");
+
     /**
      *@Description: 插入题目
      *@Date: 2017/11/28
      */
     public PaperAnswer addPaperAnswer(PaperAnswer paperAnswer){
-        int score = 0;
-        int totalScore = 0;
+        double score = 0;       //用户得分
+        double totalScore = 0;  //试卷满分
         if(paperAnswer.getId()==0)
             paperAnswer.setId((Long) defaultKeyGenerator.generateKey());
         if(paperAnswer.getCreateTime()==0) {
@@ -56,16 +63,28 @@ public class PaperAnswerService {
                         score += questions.get(i).getScore();
                     }
                 } else if (questions.get(i).getType() == 2) {
-                    if (paperAnswer.getFullAnswer().get(i).equals(questions.get(i).getBlankAnswer())) {
-                        score += questions.get(i).getScore();
+                    //如果主观题答案为数字的话，则全匹配，否则计算花名
+                    if(isInteger(questions.get(i).getBlankAnswer())){
+                        if(paperAnswer.getFullAnswer().get(i).equals(questions.get(i).getBlankAnswer()))
+                            score += questions.get(i).getScore();
+                    } else {
+                        String rightAnswer = questions.get(i).getBlankAnswer();
+                        String userAnswer = paperAnswer.getFullAnswer().get(i);
+                        MySimHash mySimHash1 = new MySimHash(rightAnswer,64);
+                        MySimHash mySimHash2 = new MySimHash(userAnswer, 64);
+                        double similar = mySimHash1.getSemblance(mySimHash2);
+                        score += questions.get(i).getScore() * similar;
                     }
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
-        paperAnswer.setScore((int)score*100/totalScore);
+        paperAnswer.setScore(Double.parseDouble(df.format(score*100/totalScore)));
         return paperAnswerRepository.save(paperAnswer);
     }
 
+    public boolean isInteger(String str) {
+        return pattern.matcher(str).matches();
+    }
 }

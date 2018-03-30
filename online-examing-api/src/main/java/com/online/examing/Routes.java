@@ -2,15 +2,6 @@ package com.online.examing;
 
 public interface Routes {
 
-    /**
-     * Comment
-     */
-    String COMMENT_BASE_ROUTE = "/comment";
-    String COMMENT_ADD = "/commentAdd";
-    String COMMENT_GET_BY_ID = "/getByComment";
-    String COMMENT_GET_ALL = "/getAllComment";
-    String COMMENT_SEARCH = "/search";
-    String COMMENT_UPDATE_SELECT_COMMENT = "/updateSelectComment";
 
     /**
      * User
@@ -18,21 +9,24 @@ public interface Routes {
     String USER_BASE_ROUTE = "/user";
     String USER_LOGIN = "/login";
     String USER_REGISTER = "/register";
-    String USER_UPDATEINFO = "/updateInfo";
-    String USER_GETINFO = "/getInfo";
+    String USER_UPDATE_INFO = "/updateInfo";
+    String USER_GET_INFO = "/getInfo";
+    String USER_GET_ALL_INFO = "/getAllInfo";
     String USER_GET_PAPER = "/getPaper";
-
+    String USER_DELETE = "/delete";
+    String USER_UPDATE_STATUS= "/updateStatus";
+    String USER_CHECK_NUMBER = "/checkExist";
 
     /**
      * Paper
      */
     String PAPER_BASE_ROUTE = "/paper";
-    String PAPER_ADDQUESTION = "/addQuestion";
-    String PAPER_GETQUESTIONDSIZE = "/getQuestionSize";
-    String PAPER_GETQUESTIONDLIST = "/getQuestionList";
-    String PAPER_SEARCHQUESTION = "/searchQuestion";
-    String PAPER_UPDATEQUESTION = "/updateQuestion";
-    String PAPER_DELETEQUESTION = "/deleteQuestion";
+    String PAPER_ADD_QUESTION = "/addQuestion";
+    String PAPER_GET_QUESTIOND_SIZE = "/getQuestionSize";
+    String PAPER_GET_QUESTIOND_LIST = "/getQuestionList";
+    String PAPER_SEARCH_QUESTION = "/searchQuestion";
+    String PAPER_UPDATE_QUESTION = "/updateQuestion";
+    String PAPER_DELETE_QUESTION = "/deleteQuestion";
 
     /**
      * Exam

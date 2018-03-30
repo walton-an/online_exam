@@ -2,7 +2,7 @@
   <el-form :model="userForm" :rules="rules" ref="userForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
     <h3 class="title">系统登录</h3>
     <el-form-item prop="id">
-      <el-input type="text" v-model="userForm.accountNumber" auto-complete="off" placeholder="账号"></el-input>
+      <el-input type="number" v-model="userForm.accountNumber" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item prop="password">
       <el-input type="password" v-model="userForm.password" auto-complete="off" placeholder="密码"></el-input>
@@ -11,9 +11,9 @@
     <el-form-item style="width:100%;">
       <el-button type="primary" style="width:100%;" @click.native.prevent="Login" :loading="loading">登录</el-button>
     </el-form-item>
-    <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:100%;" @click.native.preven="Register" :loading="loading">注册</el-button>
-    </el-form-item>
+    <!--<el-form-item style="width:100%;">-->
+      <!--<el-button type="primary" style="width:100%;" @click.native.preven="Register" :loading="loading">注册</el-button>-->
+    <!--</el-form-item>-->
   </el-form>
 </template>
 
@@ -47,25 +47,34 @@
                   this.loading = true;
                   userLogin(userParas).then((res) => {
                       this.loading = false;
-                      //console.log("res"+res.data.name);
-                      if (res.data !== undefined) {
+                      if (res.data.type < 3) {
                           sessionStorage.setItem('name', res.data.name);   //将name存到sessionStorage
-                          sessionStorage.setItem('accountNumber', res.data.accountNumber);   //将name存到sessionStorage
+                          sessionStorage.setItem('accountNumber', res.data.accountNumber);   //将学号存到sessionStorage
                           sessionStorage.setItem('type', res.data.type);   //将type存到sessionStorage
                           if(res.data.type == 0) {  //学生登录跳转到学生页面
                               this.$router.push({path: '/myExam'});
-                          }else {                 //教师登录跳转到教师页面
+                          }else if(res.data.type == 1){                 //教师登录跳转到教师页面
                               this.$router.push({path: '/choiceQuestion'});
+                          } else if((res.data.type == 2) ){    //管理员
+                              this.$router.push({path: '/userManager'});
                           }
                           this.$message({
                               message: '登录成功',
                               type: 'success'
                           });
                       } else{
-                          this.$message({
-                              message: '用户名或密码错误',
-                              type: 'error'
-                          });
+                          if(res.data.type == 3) {
+                              this.$message({
+                                  message: '密码错误',
+                                  type: 'error'
+                              });
+                          }else  if(res.data.type == 4) {
+                              this.$message({
+                                  message: '用户不存在',
+                                  type: 'error'
+                              });
+                          }
+
                       }
                   })
               }else {  //没通过表单验证（没输入账号，密码等）

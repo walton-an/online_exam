@@ -17,5 +17,7 @@ public interface UserRepository extends MongoRepository<User,Long> {
 
     public User findByAccountNumber(Long accountNumber);
 
-    public User findByAccountNumberAndPassword(Long accountNumber, String password);
+    public User findByAccountNumberAndPasswordAndStatus(Long accountNumber, String password,int status);
+
+    public User findByAccountNumberAndStatus(Long accountNumber, int status);
 }
