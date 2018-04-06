@@ -1,5 +1,7 @@
 package com.online.examing.domain;
 
+import com.domain.ManagerClass;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ public class UserRequestDto {
     public int page;
     public int pageSize;
     private Long accountNumber;
+    private Long oldAccountNum;
     private String name;
     private String password;
     private Integer type;   //0学生、1教师、2管理员
@@ -20,6 +23,25 @@ public class UserRequestDto {
     private List<Long> ids;
     private int status;
     private long id;
+    private int searchType;
+    private String searchTitle;
+    private List<ManagerClass> managerClasses;
+
+    public Long getOldAccountNum() {
+        return oldAccountNum;
+    }
+
+    public void setOldAccountNum(Long oldAccountNum) {
+        this.oldAccountNum = oldAccountNum;
+    }
+
+    public List<ManagerClass> getManagerClasses() {
+        return managerClasses;
+    }
+
+    public void setManagerClasses(List<ManagerClass> managerClasses) {
+        this.managerClasses = managerClasses;
+    }
 
     public long getId() {
         return id;
@@ -119,5 +141,21 @@ public class UserRequestDto {
 
     public void setIds(List<Long> ids) {
         this.ids = ids;
+    }
+
+    public int getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(int searchType) {
+        this.searchType = searchType;
+    }
+
+    public String getSearchTitle() {
+        return searchTitle;
+    }
+
+    public void setSearchTitle(String searchTitle) {
+        this.searchTitle = searchTitle;
     }
 }

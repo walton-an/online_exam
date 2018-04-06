@@ -1,8 +1,11 @@
 package com.online.examing.repository;
 
 import com.domain.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Author: walton
@@ -13,7 +16,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends MongoRepository<User,Long> {
 
-//    public User findById(Long id);
+    public List<User> findByAccountNumberExists(Long accountNumber);
+
+    public List<User> findByNameContains(String name, Pageable pageable);
 
     public User findByAccountNumber(Long accountNumber);
 

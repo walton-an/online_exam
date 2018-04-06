@@ -107,6 +107,8 @@
             startTest: function (index, row) {
                 var beginTime = $.extend(true, {}, row).beginTime;
                 var endTime = $.extend(true, {}, row).endTime;
+                var testTime = $.extend(true, {}, row).testTime;
+                console.log(testTime+"aaaakaoshishiijan")
                 if(new Date().getTime() < beginTime ){
                     this.$message({
                         message: '尚未到考试时间，请稍后重试',
@@ -133,9 +135,12 @@
                 this.fullAnswer = [];
                 this.score = 0;
                 //毫秒数转为分钟数，并四舍五入
-                this.minutes = Math.round(( endTime - beginTime ) * 0.0000167);
-                if(this.minutes == 0)
-                    this.seconds = Math.round(( endTime - beginTime ) * 0.001);
+                this.minutes = Math.round(( new Date().getTime() - beginTime ) * 0.0000167);
+                if(this.minutes == 0) {
+                    this.seconds = Math.round(( new Date().getTime() - beginTime ) * 0.001);
+                } else if(this.minutes > testTime) {
+                    this.minutes = testTime;
+                }
                 this.timer();
                 console.log(this.examQuestions.length+"长度"+this.minutes+"  "+this.seconds);
             },

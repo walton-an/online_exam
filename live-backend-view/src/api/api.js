@@ -19,8 +19,8 @@ export const userUpdateStatus = params => {
 export const updateInfo = params => {
     return axios.post(`${base}user/updateInfo`, params).then(res=>res.data);
 };
-export const getAllInfo = params => {
-    return axios.get(`${base}user/getAllInfo`,{params:params}).then(res=>res.data);
+export const searchUser = params => {
+    return axios.get(`${base}user/search`,{params:params}).then(res=>res.data);
 };
 export const getInfo = params => {
     return axios.get(`${base}user/getInfo`,{params:params}).then(res=>res.data);
@@ -31,6 +31,9 @@ export const getPaper = params => {
 export const checkAccountNumber = params => {
     return axios.get(`${base}user/checkExist`,{params:params}).then(res=>res.data);
 };
+// export const searchUser = params => {
+//     return axios.get(`${base}user/search`,{params:params}).then(res=>res.data);
+// };
 
 /******* paper *******/
 export const addQuestion = params => {

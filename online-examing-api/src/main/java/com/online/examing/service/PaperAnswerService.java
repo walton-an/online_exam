@@ -34,7 +34,7 @@ public class PaperAnswerService {
     //正则匹配是否为数字
     Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
     //保留两位小数
-    DecimalFormat df = new DecimalFormat("0.00");
+    DecimalFormat df = new DecimalFormat("0.0");
 
     /**
      *@Description: 插入题目

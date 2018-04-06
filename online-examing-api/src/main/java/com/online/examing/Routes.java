@@ -11,7 +11,7 @@ public interface Routes {
     String USER_REGISTER = "/register";
     String USER_UPDATE_INFO = "/updateInfo";
     String USER_GET_INFO = "/getInfo";
-    String USER_GET_ALL_INFO = "/getAllInfo";
+    String USER_SEARCH = "/search";
     String USER_GET_PAPER = "/getPaper";
     String USER_DELETE = "/delete";
     String USER_UPDATE_STATUS= "/updateStatus";

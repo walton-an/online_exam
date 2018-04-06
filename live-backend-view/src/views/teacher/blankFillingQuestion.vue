@@ -17,7 +17,7 @@
         <!--列表展示-->
         <el-table :data="questions" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" ref="teamRef">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="status" label="状态">
+            <el-table-column prop="status" label="状态" width="70">
                 <template scope="scope">
                     <span v-if="scope.row.status=== 1">显示</span>
                     <span v-else style="color: red">隐藏</span>
@@ -29,8 +29,9 @@
                 </template>
             </el-table-column>
             <el-table-column prop="blankAnswer" label="答案" ></el-table-column>
-            <el-table-column prop="createTime" label="创建时间" :formatter="formatDate"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column prop="score" label="分值" width="70"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" :formatter="formatDate" width="180"></el-table-column>
+            <el-table-column label="操作" width="70">
                 <template scope="scope">
                     <el-button type="danger" size="small" @click="DelQuestion(scope.$index, scope.row)">删除</el-button>
                 </template>

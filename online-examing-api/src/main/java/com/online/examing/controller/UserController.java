@@ -67,12 +67,12 @@ public class UserController {
     }
 
     /**
-     * 获取所有用户信息
+     * 查找用户
      */
-    @GetMapping(Routes.USER_GET_ALL_INFO)
-    public RestResult getInfo(UserRequestDto user){
+    @GetMapping(Routes.USER_SEARCH)
+    public RestResult search(UserRequestDto userRequestDto){
         RestDoing restDoing = restResult ->{
-            restResult.data = userService.getAllInfo(user);
+            restResult.data = userService.search(userRequestDto);
         };
         return restDoing.go(null, logger);
     }
@@ -101,7 +101,7 @@ public class UserController {
     }
 
     /**
-     * 删除用户
+     * 更新用户状态
      */
     @PostMapping(Routes.USER_UPDATE_STATUS)
     public RestResult updateStatus(@RequestBody UserRequestDto userRequestDto){

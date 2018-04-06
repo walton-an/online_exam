@@ -20,6 +20,9 @@
             <el-form-item label="考试时间：" >
                 {{examForm.examTimeShow}}
             </el-form-item>
+            <el-form-item label="考试时长：" >
+                <el-input v-model="examForm.testTime" placeholder="请输入考试时长（单位分钟）"></el-input>
+            </el-form-item>
             <el-form-item label="考试题目：" >
                 <el-table :data="examForm.selectQuestion" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" ref="examRef" >
                     <el-table-column property="type" sortable label="题目类型" width="150" :formatter="formatQuestionType"></el-table-column>
@@ -102,6 +105,7 @@
                     checkedClass: [],
                     examTimeShow: "",
                     selectQuestion: [],
+                    testTime: ""
                 },
                 examDetail: {},
                 examRules: {},
@@ -203,6 +207,12 @@
                         type: 'error'
                     });
                     return;
+                }else if(this.examForm.testTime==""){
+                    this.$message({
+                        message: '请输入考试时长',
+                        type: 'error'
+                    });
+                    return;
                 }else if(this.examForm.selectQuestion==""){
                     this.$message({
                         message: '请选择试卷题目',
@@ -218,6 +228,7 @@
                     endTime: (new Date(this.examTime[1])).getTime(),
                     examQuestion: this.examForm.selectQuestion,
                     teacherId: this.accountNumber,
+                    testTime: this.examForm.testTime
                 };
                 createOrUpdatePaper(para).then(res=>{
                     this.$message({
@@ -272,6 +283,7 @@
                    this.examForm.examTimeShow = beginTime + " -- " + endTime;
                    this.examForm.selectQuestion = res.examQuestion;
                    this.buttonName = "更新试卷";
+                   this.examForm.testTime = res.testTime;
                 });
             },
             formatTime: function (time) {
@@ -287,6 +299,7 @@
                 this.examForm.selectQuestion = [];
                 this.sels = [];
                 this.buttonName = "生成试卷";
+                this.examForm.testTime = "";
             },
             handleClick(tab) {
                 if(tab.name == "first"){

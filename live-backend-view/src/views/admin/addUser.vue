@@ -7,7 +7,11 @@
         <el-form-item label="姓名：" prop="name">
             <el-input type="text" v-model="userForm.name" auto-complete="off" placeholder="2-8个字符"></el-input>
         </el-form-item>
-
+        <el-form-item label="所属班级："  v-show="!isEdit">
+            <el-tag v-for="examClass in this.managerClasses" :key="examClass" closable @close="handleCloseClass(examClass)">
+                {{examClass}}
+            </el-tag>
+        </el-form-item>
         <el-form-item label="年级：" prop="grade">
             <el-select clearable v-model="userForm.grade">
                 <el-option v-for="item in 2017-1990" :label="(item+1990)" :value="item+1990+''" :key="item+1990+''"></el-option>
@@ -38,6 +42,7 @@
 </template>
 
 <script>
+    import util from '../../common/js/util'
     import {checkAccountNumber, getInfo, userRegister} from '../../api/api';
     export default {
         data() {
@@ -57,6 +62,8 @@
                 school: g.school,
                 major: g.major,
                 majorTemp: [],
+                managerClasses: [],
+                updateClasses: [],
                 unable: true,
                 rules: {
                     accountNumber: [
@@ -76,13 +83,13 @@
                     type: [
                         { required: true, message: '请选择身份', trigger: 'change' }
                     ],
-                    school: [
-                        { type:"integer", required: true, message: '请选择学院、专业', trigger: 'change' }
-                    ],
-                    grade: [
-                        { required: true, message: '请选择年级', trigger: 'blur' },
-                        { required: true, message: '请选择年级', trigger: 'change' }
-                    ],
+//                    school: [
+//                        { type:"integer", required: true, message: '请选择学院、专业', trigger: 'change' }
+//                    ],
+//                    grade: [
+//                        { required: true, message: '请选择年级', trigger: 'blur' },
+//                        { required: true, message: '请选择年级', trigger: 'change' }
+//                    ],
                 },
                 checked: true,
                 accountNumber: "",
@@ -110,6 +117,11 @@
                     }
                 });
             },
+            //删除班级
+            handleCloseClass: function (examClass) {
+                this.managerClasses.splice(this.managerClasses.indexOf(examClass), 1);
+                console.log(examClass+"aa"+this.managerClasses.length)
+            },
             getSelectMajor: function () {
                 this.majorTemp  = this.major.filter((r) => r.parentIdStr === this.userForm.school);
                 this.unable = false;
@@ -128,16 +140,18 @@
                             }
                         }
                         userParas.school = schoolName;
+                        userParas.managerClasses = this.updateClasses;
+                        userParas.oldAccountNum = this.accountNumber;
                         this.loading = true;
                         userRegister(userParas).then((res) => {
                             this.loading = false;
                             console.log(res.data);
                             if (res.data !== undefined) {
                                 this.$message({
-                                    message: '注册成功',
+                                    message: this.isEdit?'注册成功':'更新成功',
                                     type: 'success'
                                 });
-                                this.$router.push({path: '/userManager'});  //login.vue页面
+                                this.$router.push({path: '/userManager'});  //userManager.vue页面
                             }else {
                                 this.$message({
                                     message: '用户已存在',
@@ -164,34 +178,41 @@
                         this.userForm.accountNumber = res.data.accountNumber + "";
                         this.userForm.name = res.data.name;
                         this.userForm.password = res.data.password;
-                        this.userForm.grade = res.data.managerClasses[0].grade + "";
+                        this.userForm.grade = "";
                         this.userForm.type = res.data.type+"";
-                        var school = res.data.managerClasses[0].school;
-                        for(var i = 0; i< this.school.length; i++){
-                            if(this.school[i].title === school){
-                                this.userForm.school = this.school[i].idStr;
-                                break;
+
+                        this.updateClasses = res.data.managerClasses;
+                        var index = 0;
+                        for(var j = 0; j < res.data.managerClasses.length; j++){
+                            var major = res.data.managerClasses[j].major;
+                            var managerClasses =  res.data.managerClasses[j];
+                            for(var i = 0; i < major.length; i++){
+                                this.managerClasses[index] = managerClasses.grade + managerClasses.school + managerClasses.major[i];
+                                index++;
                             }
                         }
-                        var major = res.data.managerClasses[0].major;
-//                        this.userForm.major = [];
-                        this.majorTemp = this.major.filter((r) => r.parentIdStr === this.userForm.school);
-                        for(var j =0; j < major.length; j++){
-                            for(var i = 0; i< this.majorTemp.length; i++){
-                                if(this.majorTemp[i].title.localeCompare(major[j])==0){
-                                    this.userForm.major.push(this.majorTemp[i]);
-                                    break;
-                                }
-                            }
-                        }
-//                        if (!_.isEmpty(this.userForm.major)){
-//                            this.userForm.major.forEach(function (val,index,arr) {
-//                                arr[index] = val.idStr;
-//                            })
-//                        }else {
-//                            this.userForm.major = [];
+
+//                        var school = res.data.managerClasses[0].school;
+//                        for(var i = 0; i< this.school.length; i++){
+//                            if(this.school[i].title === school){
+//                                this.userForm.school = this.school[i].idStr;
+//                                break;
+//                            }
 //                        }
-                    })
+//                        var major = res.data.managerClasses[0].major;
+//                        this.userForm.major = [];
+//                        this.majorTemp = this.major.filter((r) => r.parentIdStr === this.userForm.school);
+//                        for(var j = 0; j < major.length; j++){
+//                            for(var i = 0; i < this.majorTemp.length; i++){
+//                                if( this.majorTemp[i].title.localeCompare(major[j]) == 0 ){
+//                                    this.userForm.major[j] = this.majorTemp[i];
+//                                }
+//                            }
+//                        }
+//                        this.userForm.major.forEach(function (val,index,arr) {
+//                            arr[index] = val.idStr;
+//                        });
+                    });
                 }else {
 //                    this.resetForm();
                     this.isEdit = true;

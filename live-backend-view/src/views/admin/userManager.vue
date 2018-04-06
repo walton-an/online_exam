@@ -1,58 +1,25 @@
 <template>
     <section>
-        <!--<el-col :span="24" class="toolbar">-->
-            <!--<el-form :inline="true" :model="filters">-->
-                <!--<el-form-item label="大类">-->
-                    <!--<el-select v-model="filters.catalogId" placeholder="全部" clearable>-->
-                        <!--<el-option-->
-                                <!--v-for="item in catalogs"-->
-                                <!--:key="item.idStr"-->
-                                <!--:value="item.idStr"-->
-                                <!--:label="item.title"-->
-                        <!--&gt;</el-option>-->
-                    <!--</el-select>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="比赛状态" placeholder="全部">-->
-                    <!--<el-select v-model="filters.gameStatus" clearable>-->
-                        <!--<el-option-->
-                                <!--v-for="item in gameStatus"-->
-                                <!--:key="item.idStr"-->
-                                <!--:value="item.idStr"-->
-                                <!--:label="item.title"-->
-                        <!--&gt;</el-option>-->
-                    <!--</el-select>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="直播间状态">-->
-                    <!--<el-select v-model="filters.status" clearable>-->
-                        <!--<el-option-->
-                                <!--v-for="item in roomStatus"-->
-                                <!--:key="item.idStr"-->
-                                <!--:value="item.idStr"-->
-                                <!--:label="item.title"-->
-                        <!--&gt;</el-option>-->
-                    <!--</el-select>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="时间">-->
-                    <!--<el-date-picker-->
-                            <!--v-model="filters.timeRange"-->
-                            <!--type="datetimerange"-->
-                            <!--placeholder="开始和结束时间"-->
-                            <!--align="right"-->
-                            <!--clearable-->
-                    <!--&gt;-->
-                    <!--</el-date-picker>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item>-->
-                    <!--<el-input v-model="filters.searchTitle" placeholder="输入直播间名称或队名"></el-input>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item>-->
-                    <!--<el-button icon="search" @click="searchList">搜索</el-button>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item>-->
-                    <!--<el-button icon="plus" @click="addRoom">新建直播间</el-button>-->
-                <!--</el-form-item>-->
-            <!--</el-form>-->
-        <!--</el-col>-->
+        <el-col :span="24" class="toolbar">
+            <el-form :inline="true" :model="filters">
+                <el-form-item label="">
+                    <el-select v-model="filters.type" placeholder="请选择要搜索的分类" clearable>
+                        <el-option
+                                v-for="item in type"
+                                :key="item.idStr"
+                                :value="item.idStr"
+                                :label="item.title"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.searchTitle" placeholder="输入搜索的名称"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button icon="search" @click="searchList">搜索</el-button>
+                </el-form-item>
+            </el-form>
+        </el-col>
 
         <el-table :data="allUser" highlight-current-row v-loading="listLoading" @selection-change="selectChange" style="width: 100%;" ref="userRef">
             <el-table-column type="selection" width="55"></el-table-column>
@@ -69,7 +36,7 @@
             <el-table-column prop="managerClasses" label="班级" width="400" :formatter="formatClass"></el-table-column>
             <el-table-column prop="createTime" label="注册时间" :formatter="formatTime" width="180"></el-table-column>
             <el-table-column prop="updateTime" label="更新时间" :formatter="formatTime" width="180"></el-table-column>
-            <el-table-column label="操作" width="80">
+            <el-table-column label="设为" width="80">
                 <template scope="scope">
                     <div v-if="scope.row.status === 0" style="color:blue;cursor: pointer" @click="updateStatus(scope.$index, scope.row,1)">显示</div>
                     <div v-if="scope.row.status === 1" style="color:red;cursor: pointer" @click="updateStatus(scope.$index, scope.row,0)">隐藏</div>
@@ -88,7 +55,7 @@
 </template>
 <script>
     import util from '../../common/js/util';
-    import {getAllInfo, userDelete, userUpdateStatus} from "../../api/api";
+    import {getAllInfo, searchUser, userDelete, userUpdateStatus} from "../../api/api";
     export default {
         data(){
             var g = this.GLOBAL.defaultConfig;
@@ -98,10 +65,7 @@
                 total: 0,
                 selectedItems: "",
                 filters: {
-                    timeRange: [],
-                    catalogId: "",
-                    gameStatus: "",
-                    status: "",
+                    type: "",
                     searchTitle: ""
                 },
                 operations: {
@@ -109,8 +73,10 @@
                     status: "",
                 },
                 status: g.operations,
-                catalogs: [
-
+                type: [
+                    {idStr: "0", title: "学号"},
+                    {idStr: "1", title: "姓名"},
+                    {idStr: "2", title: "班级"}
                 ],
                 gameStatus: g.gameStatus,
                 roomStatus: g.roomStatus,
@@ -180,12 +146,30 @@
             },
             getAllUserInfo: function(){
                 let para = {
+                    searchType: 4,
                     page: this.page,
                     pageSize: this.pageSize
                 };
-                getAllInfo(para).then(res=>{
+                searchUser(para).then(res=>{
                     this.allUser = res.data.list;
                     this.total = res.data.size;
+                })
+            },
+            searchList: function () {
+                let para = {
+                    searchType: this.filters.type,
+                    searchTitle: this.filters.searchTitle,
+                    page: this.page,
+                    pageSize: this.pageSize
+                };
+                searchUser(para).then(res=>{
+                    if(res.data.list!=null){
+                        this.allUser = res.data.list;
+                        this.total = res.data.size;
+                    }else{
+                        this.allUser = [];
+                        this.total = 0;
+                    }
                 })
             },
             handleCurrentChange: function () {
