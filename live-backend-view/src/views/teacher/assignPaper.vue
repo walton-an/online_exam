@@ -119,6 +119,7 @@
                 examTimeShow: "",
                 examId: "",
                 buttonName: "生成试卷",
+                name: sessionStorage.getItem('name'),
             };
         },
         methods: {
@@ -228,6 +229,7 @@
                     endTime: (new Date(this.examTime[1])).getTime(),
                     examQuestion: this.examForm.selectQuestion,
                     teacherId: this.accountNumber,
+                    teacherName: this.name,
                     testTime: this.examForm.testTime
                 };
                 createOrUpdatePaper(para).then(res=>{

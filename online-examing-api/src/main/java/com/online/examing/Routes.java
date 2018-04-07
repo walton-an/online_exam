@@ -18,23 +18,25 @@ public interface Routes {
     String USER_CHECK_NUMBER = "/checkExist";
 
     /**
+     * Question
+     */
+    String QUESTION_BASE_ROUTE = "/question";
+    String ADD_QUESTION = "/addQuestion";
+    String GET_QUESTIOND_SIZE = "/getQuestionSize";
+    String GET_QUESTIOND_LIST = "/getQuestionList";
+    String SEARCH_QUESTION = "/searchQuestion";
+    String UPDATE_QUESTION = "/updateQuestion";
+    String DELETE_QUESTION = "/deleteQuestion";
+
+    /**
      * Paper
      */
     String PAPER_BASE_ROUTE = "/paper";
-    String PAPER_ADD_QUESTION = "/addQuestion";
-    String PAPER_GET_QUESTIOND_SIZE = "/getQuestionSize";
-    String PAPER_GET_QUESTIOND_LIST = "/getQuestionList";
-    String PAPER_SEARCH_QUESTION = "/searchQuestion";
-    String PAPER_UPDATE_QUESTION = "/updateQuestion";
-    String PAPER_DELETE_QUESTION = "/deleteQuestion";
-
-    /**
-     * Exam
-     */
-    String EXAM_BASE_ROUTE = "/exam";
-    String EXAM_CREATE_UPDATE = "/createOrUpdatePaper";
-    String EXAM_GET = "/getPaper";
-    String EXAM_GET_PAPEER_BY_ID = "/getPaperById";
-    String EXAM_ADD_PAPER_ANSWER = "/addPaperAnswer";
-    String EXAM_EXIST_PAPER_ANSWER = "/existPaperAnswer";
+    String CREATE_UPDATE_PAPER = "/createOrUpdatePaper";
+    String GET_PAPER = "/getPaper";
+    String GET_PAPEER_BY_ID = "/getPaperById";
+    String ADD_PAPER_ANSWER = "/addPaperAnswer";
+    String DELETE_PAPER_ANSWER = "/deletePaperAnswer";
+    String GET_PAPER_ANSWER = "/getPaperAnswer";
+    String EXIST_PAPER_ANSWER = "/existPaperAnswer";
 }

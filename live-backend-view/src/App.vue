@@ -8,10 +8,11 @@
 </template>
 
 <script>
-export default {
-	name: 'app',
-	components: {
-	}
+    import 'babel-polyfill'
+	export default {
+		name: 'app',
+		components: {
+		}
 }
 
 </script>

@@ -20,6 +20,7 @@ import assignPaper from './views/teacher/assignPaper.vue';
 import paperManager from './views/teacher/paperManager.vue';
 //admin
 import addUser from './views/admin/addUser.vue'
+import paperAnswerManager from './views/admin/paperAnswerManager.vue'
 import userManager from './views/admin/userManager.vue'
 
 let routes = [
@@ -134,6 +135,17 @@ let routes = [
         leaf: true,//只有一个节点
         children: [
             { path: '/userManager', component: userManager, name: '用户管理' },
+        ]
+    },
+    {
+        path: '/admin',
+        component: adminHome,
+        name: '答卷管理',
+        iconCls:'fa el-icon-edit',
+        isAdmin: true,
+        leaf: true,//只有一个节点
+        children: [
+            { path: '/paperAnswerManager', component: paperAnswerManager, name: '答卷管理' },
         ]
     },
     {

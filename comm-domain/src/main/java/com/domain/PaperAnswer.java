@@ -14,6 +14,11 @@ import java.util.List;
 @Document(collection="PaperAnswer")
 public class PaperAnswer extends BaseEntity{
     private Long stuId;
+    private String studentName;
+    private String managerClass;
+    private String teacherName;
+    private List<String> examClass;
+    private String paperName;
     private Long paperId;
     private List<String> selectAnswers;
     private List<String> tfAnswers;
@@ -75,5 +80,45 @@ public class PaperAnswer extends BaseEntity{
 
     public void setCreateTime(long createTime) {
         this.createTime = createTime;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getManagerClass() {
+        return managerClass;
+    }
+
+    public void setManagerClass(String managerClass) {
+        this.managerClass = managerClass;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public List<String> getExamClass() {
+        return examClass;
+    }
+
+    public void setExamClass(List<String> examClass) {
+        this.examClass = examClass;
+    }
+
+    public String getPaperName() {
+        return paperName;
+    }
+
+    public void setPaperName(String paperName) {
+        this.paperName = paperName;
     }
 }

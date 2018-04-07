@@ -19,6 +19,15 @@ public class ExamPaper extends BaseEntity {
     private List<PaperQuestion> examQuestion;
     private Integer status; //0代表未考试，1代表已考完
     private long teacherId; //出题老师
+    private String teacherName;
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
 
     public String getTitle() {
         return title;

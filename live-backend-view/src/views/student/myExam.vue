@@ -7,6 +7,7 @@
                         <el-table-column property="title" label="试卷名称" width="200"></el-table-column>
                         <el-table-column property="beginTime" label="考试开始时间" :formatter="formatTime"></el-table-column>
                         <el-table-column property="endTime" label="考试结束时间" :formatter="formatTime"></el-table-column>
+                        <el-table-column property="testTime" label="考试时长（/分钟）"></el-table-column>
                         <el-table-column property="status" label="考试状态">
                             <template scope="scope">
                                 <div v-if="scope.row.status === 0" style="color:blue;cursor: pointer" @click="startTest(scope.$index, scope.row)">
@@ -81,6 +82,12 @@
                 ifTest: 0,
                 score: 0,
                 answer: [],
+                managerClass: '',
+                studentName: sessionStorage.getItem('name'),
+                paperName: '',
+                examClass: [],
+                teacherName: '',
+                timeHandler: "",
             };
         },
         methods:{
@@ -90,14 +97,15 @@
             //倒计时
             timer:function () {
                 var _this = this;
-                var time = window.setInterval(function () {
+                this.timeHandler = window.setInterval(function () {
                     if (_this.seconds == 0 && _this.minutes != 0) {
                         _this.seconds = 59;
                         _this.minutes -= 1;
                     }else if(_this.minutes == 0 && _this.seconds == 0){
+                        console.log("timer tiajiao")
                         _this.submitPaper();
                         _this.seconds = 0;
-                        window.clearInterval(time);
+                        window.clearInterval(this.timeHandler);
                     }else{
                         _this.seconds -= 1
                     }
@@ -108,7 +116,6 @@
                 var beginTime = $.extend(true, {}, row).beginTime;
                 var endTime = $.extend(true, {}, row).endTime;
                 var testTime = $.extend(true, {}, row).testTime;
-                console.log(testTime+"aaaakaoshishiijan")
                 if(new Date().getTime() < beginTime ){
                     this.$message({
                         message: '尚未到考试时间，请稍后重试',
@@ -117,14 +124,20 @@
                     return;
                 }
                 if(new Date().getTime() > endTime ){
+                    console.log("考试时间已结束")
                     this.paperId = $.extend(true, {}, row).idStr;
                     this.submitPaper();
-                    this.$message({
-                        message: '考试时间已结束，下次请注意',
-                        type: 'error'
-                    });
+                    setTimeout(() => {
+                        this.$message({
+                            message: '考试时间已结束，下次请注意',
+                            type: 'error'
+                        });
+                    }, 500);
                     return;
                 }
+                this.paperName = $.extend(true, {}, row).title;//试卷名称
+                this.examClass = $.extend(true, {}, row).examClass; //考试班级
+                this.teacherName =  $.extend(true, {}, row).teacherName; //出卷老师
                 this.paperVisible = true;
                 this.examQuestions = $.extend(true, {}, row).examQuestion;
                 this.title  = $.extend(true, {}, row).title;
@@ -188,6 +201,7 @@
                 };
                 getInfo(para).then(res=>{
                     this.studentInfo = res.data;
+                    this.managerClass = this.studentInfo.managerClasses[0].grade + this.studentInfo.managerClasses[0].major[0];
                     if(!_.isUndefined(this.studentInfo.managerClasses)) {
                         let paperPara = {
                             stuId: this.accountNumber,
@@ -202,11 +216,18 @@
                 });
             },
             submitPaper: function () {
+                console.log("shoudong tiajiao")
+                window.clearInterval(this.timeHandler);
                 this.minutes = 0;
                 this.seconds = 0;
                 var para = {
-                    paperId: this.paperId,
                     stuId: this.accountNumber,
+                    studentName: this.studentName,
+                    managerClass: this.managerClass,//学生班级
+                    teacherName: this.teacherName,//出卷老师
+                    examClass: this.examClass,
+                    paperName: this.paperName,
+                    paperId: this.paperId,
                     selectAnswers: this.selectAnswers,
                     tfAnswers: this.tfAnswers,
                     fullAnswer: this.fullAnswer,

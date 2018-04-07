@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 let base = "http://localhost:8081/";
 // let base = "http://39.108.144.48:8081/";
 
@@ -35,40 +34,46 @@ export const checkAccountNumber = params => {
 //     return axios.get(`${base}user/search`,{params:params}).then(res=>res.data);
 // };
 
-/******* paper *******/
+/******* question *******/
 export const addQuestion = params => {
-    return axios.post(`${base}paper/addQuestion`, params).then(res=>res.data);
+    return axios.post(`${base}question/addQuestion`, params).then(res=>res.data);
 };
 export const getQuestionSize = params => {
-    return axios.get(`${base}paper/getQuestionSize`,{params:params}).then(res=>res.data);
+    return axios.get(`${base}question/getQuestionSize`,{params:params}).then(res=>res.data);
 };
 export const getQuestionList = params => {
-    return axios.get(`${base}paper/getQuestionList`, {params:params} ).then(res=>res.data);
+    return axios.get(`${base}question/getQuestionList`, {params:params} ).then(res=>res.data);
 };
 export const searchQuestion = params => {
-    return axios.get(`${base}paper/searchQuestion`, {params:params} ).then(res=>res.data);
+    return axios.get(`${base}question/searchQuestion`, {params:params} ).then(res=>res.data);
 };
 export const updateQuestion = params => {
-    return axios.post(`${base}paper/updateQuestion`, params).then(res=>res.data);
+    return axios.post(`${base}question/updateQuestion`, params).then(res=>res.data);
 };
 export const deleteQuestion = params => {
-    return axios.post(`${base}paper/deleteQuestion`, params).then(res=>res.data);
+    return axios.post(`${base}question/deleteQuestion`, params).then(res=>res.data);
 };
 
 
-/******* exam *******/
+/******* paper *******/
 export const createOrUpdatePaper = params => {
-    return axios.post(`${base}exam/createOrUpdatePaper`, params).then(res=>res.data);
+    return axios.post(`${base}paper/createOrUpdatePaper`, params).then(res=>res.data);
 };
 export const getExamPaper = params => {
-    return axios.get(`${base}exam/getPaper`, {params:params}).then(res=>res.data);
+    return axios.get(`${base}paper/getPaper`, {params:params}).then(res=>res.data);
 };
 export const getExamPaperById = params => {
-    return axios.get(`${base}exam/getPaperById`, {params:params}).then(res=>res.data);
+    return axios.get(`${base}paper/getPaperById`, {params:params}).then(res=>res.data);
 };
 export const addPaperAnswer = params => {
-    return axios.post(`${base}exam/addPaperAnswer`, params).then(res=>res.data);
+    return axios.post(`${base}paper/addPaperAnswer`, params).then(res=>res.data);
+};
+export const deletePaperAnswer= params => {
+    return axios.post(`${base}paper/deletePaperAnswer`, params).then(res=>res.data);
 };
 export const existPaperAnswer = params => {
-    return axios.get(`${base}exam/existPaperAnswer`, {params:params}).then(res=>res.data);
+    return axios.get(`${base}paper/existPaperAnswer`, {params:params}).then(res=>res.data);
+};
+export const getPaperAnswer = params => {
+    return axios.get(`${base}paper/getPaperAnswer`, {params:params}).then(res=>res.data);
 };

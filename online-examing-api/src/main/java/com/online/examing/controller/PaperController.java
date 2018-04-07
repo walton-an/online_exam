@@ -1,10 +1,15 @@
 package com.online.examing.controller;
 
-import com.domain.PaperQuestion;
+import com.domain.ExamPaper;
+import com.domain.PaperAnswer;
 import com.online.examing.Routes;
 import com.online.examing.domain.PaperRequestDto;
-import com.online.examing.repository.PaperRepository;
-import com.online.examing.service.PaperService;
+import com.online.examing.domain.UserRequestDto;
+import com.online.examing.service.ExamService;
+import com.online.examing.service.PaperAnswerService;
+import com.online.examing.repository.ExamRepository;
+import com.online.examing.repository.PaperAnswerRepository;
+import com.utils.RestCode;
 import com.utils.RestDoing;
 import com.utils.RestResult;
 import org.slf4j.Logger;
@@ -12,100 +17,77 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
+/**
+ * @Author: walton
+ * @Description:
+ * @Createtime: 2018/1/30
+ */
 @RestController
 @RequestMapping(Routes.PAPER_BASE_ROUTE)
 public class PaperController {
-
-    private final static Logger logger = LoggerFactory.getLogger(PaperController.class);
-
     @Autowired
-    private PaperService paperService;
-
+    private ExamService examService;
     @Autowired
-    private PaperRepository paperRepository;
+    private ExamRepository examRepository;
+    @Autowired
+    private PaperAnswerService paperAnswerService;
+    @Autowired
+    private PaperAnswerRepository paperAnswerRepository;
 
-
+    Logger logger = LoggerFactory.getLogger(PaperController.class);
     /**
-     * 添加、更新题目
+     * 生成试卷
      */
-    @PostMapping(Routes.PAPER_ADD_QUESTION)
-    public RestResult addQuestion(@RequestBody PaperQuestion paperDetail){
+    @PostMapping(Routes.CREATE_UPDATE_PAPER)
+    public ExamPaper addExam(@RequestBody ExamPaper examPaper){
+        return examService.saveExam(examPaper);
+    }
+
+    @GetMapping(Routes.GET_PAPER)
+    public List<ExamPaper> getExam(@RequestParam(value = "teacherId")long teacherId){
+        return examRepository.findByTeacherId(teacherId);
+    }
+
+    @GetMapping(Routes.GET_PAPEER_BY_ID)
+    public ExamPaper getExamPaperById(@RequestParam(value = "examId")String examId){
+        return examRepository.findById(Long.parseLong(examId));
+    }
+
+    @PostMapping(Routes.ADD_PAPER_ANSWER)
+    public RestResult addPaperAnswer(@RequestBody PaperAnswer paperAnswer){
         RestDoing restDoing = restResult ->{
-            restResult.data = paperService.addQuestion(paperDetail);
+            paperAnswerService.addPaperAnswer(paperAnswer);
+            restResult.data = RestCode.CD1;
+        };
+        return restDoing.go(null, logger);
+    }
+
+    @GetMapping(Routes.EXIST_PAPER_ANSWER)
+    public PaperAnswer existPaperAnswer(@RequestParam(value = "stuId")String stuId,@RequestParam(value = "paperId")String paperId){
+        return paperAnswerRepository.findByStuIdAndPaperId(Long.valueOf(stuId), Long.valueOf(paperId));
+    }
+
+    @GetMapping(Routes.GET_PAPER_ANSWER)
+    public RestResult getPaperAnswer(PaperRequestDto paperRequestDto){
+        RestDoing restDoing = restResult ->{
+            restResult.data =  paperAnswerService.getPaperAnswer(paperRequestDto);
         };
         return restDoing.go(null, logger);
     }
 
     /**
-     * 删除题目
+     * 删除考生答卷
      */
-    @PostMapping(Routes.PAPER_DELETE_QUESTION)
-    public RestResult deleteQuestion(@RequestParam(value="id") Long  id){
+    @PostMapping(Routes.DELETE_PAPER_ANSWER)
+    public RestResult delete(@RequestBody UserRequestDto userRequestDto){
         RestDoing restDoing = restResult ->{
-            restResult.data = paperService.deleteQuestion(id);
+            paperAnswerService.delete(userRequestDto);
+            restResult.data = RestCode.CD1;
         };
         return restDoing.go(null, logger);
     }
-
-    /**
-     * 获取题目的分页列表
-     */
-    @GetMapping(Routes.PAPER_GET_QUESTIOND_LIST)
-    public RestResult getQuestionList(PaperRequestDto paperRequestDto){
-        RestDoing restDoing = restResult ->{
-            restResult.data = paperService.getPaperList(paperRequestDto);
-        };
-        return restDoing.go(null, logger);
-    }
-
-    /**
-     * 获取题目的总数目
-     */
-    @GetMapping(Routes.PAPER_GET_QUESTIOND_SIZE)
-    public RestResult getQuestionSize(@RequestParam(value = "type")Integer type){
-        RestDoing restDoing = restResult ->{
-            restResult.data = paperService.getPaperSize(type);
-        };
-        return restDoing.go(null, logger);
-    }
-
-    /**
-     * 查找题目
-     */
-    @GetMapping(Routes.PAPER_SEARCH_QUESTION)
-    public RestResult searchQuestion(PaperRequestDto paperRequestDto){
-        RestDoing restDoing = restResult ->{
-            restResult.data = paperService.searchQuestion(paperRequestDto);
-        };
-        return restDoing.go(null, logger);
-    }
-
-    /**
-    *@Description: 更新信息
-    *@Date: 2017/12/8
-    */
-    @PostMapping(Routes.PAPER_UPDATE_QUESTION)
-    public RestResult updateQuestion(@RequestBody PaperRequestDto paperRequestDto){
-        RestDoing restDoing = restResult ->{
-            String[] id = paperRequestDto.getIds().split(",");
-            Integer status = paperRequestDto.getStatus();
-            if(status==2){
-                for (String i : id) {
-                    paperRepository.delete(Long.valueOf(i));
-                }
-            }else {
-                PaperQuestion paperQuestion = new PaperQuestion();
-                for (String i : id) {
-                    paperQuestion = paperRepository.findOne(Long.valueOf(i));
-                    paperQuestion.setStatus(status);
-                    restResult.data = paperRepository.save(paperQuestion);
-                }
-            }
-        };
-        return restDoing.go(null, logger);
-    }
-
 
 
 }

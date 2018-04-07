@@ -11,6 +11,10 @@ import './styles/style.less'
 import $ from './common/js/jquery-vendor';
 import _ from './common/js/lodash-vendor';
 import global_ from './config/base.vue';
+import promise from 'es6-promise';
+import 'babel-polyfill'
+import 'event-source-polyfill'
+promise.polyfill();
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
