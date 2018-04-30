@@ -68,6 +68,9 @@ export const getExamPaperById = params => {
 export const addPaperAnswer = params => {
     return axios.post(`${base}paper/addPaperAnswer`, params).then(res=>res.data);
 };
+export const addPaperScore = params => {
+    return axios.post(`${base}paper/addPaperScore`, params).then(res=>res.data);
+};
 export const deletePaperAnswer= params => {
     return axios.post(`${base}paper/deletePaperAnswer`, params).then(res=>res.data);
 };
@@ -77,3 +80,10 @@ export const existPaperAnswer = params => {
 export const getPaperAnswer = params => {
     return axios.get(`${base}paper/getPaperAnswer`, {params:params}).then(res=>res.data);
 };
+export const getGroupPaperAnswer = params => {
+    return axios.get(`${base}paper/getGroupPaperAnswer`, {params:params}).then(res=>res.data);
+};
+export const getPaperAnswerDetail = params => {
+    return axios.get(`${base}paper/getPaperAnswerDetail`, {params:params}).then(res=>res.data);
+};
+

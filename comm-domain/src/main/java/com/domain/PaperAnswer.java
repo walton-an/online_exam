@@ -17,6 +17,7 @@ public class PaperAnswer extends BaseEntity{
     private String studentName;
     private String managerClass;
     private String teacherName;
+    private long teacherId;
     private List<String> examClass;
     private String paperName;
     private Long paperId;
@@ -25,9 +26,16 @@ public class PaperAnswer extends BaseEntity{
     private List<String> fullAnswer;
     private double score;
     private long createTime;
+    private int group;
+    private List<MarkUser> markUsers;
+    private PaperQuestion question;
 
     public Long getStuId() {
         return stuId;
+    }
+
+    public String getStuIdStr() {
+        return this.stuId + "";
     }
 
     public void setStuId(Long stuId) {
@@ -36,6 +44,10 @@ public class PaperAnswer extends BaseEntity{
 
     public Long getPaperId() {
         return paperId;
+    }
+
+    public String getPaperIdStr() {
+        return this.paperId + "";
     }
 
     public void setPaperId(Long paperId) {
@@ -120,5 +132,37 @@ public class PaperAnswer extends BaseEntity{
 
     public void setPaperName(String paperName) {
         this.paperName = paperName;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
+    public List<MarkUser> getMarkUsers() {
+        return markUsers;
+    }
+
+    public void setMarkUsers(List<MarkUser> markUsers) {
+        this.markUsers = markUsers;
+    }
+
+    public long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(long teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public PaperQuestion getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(PaperQuestion question) {
+        this.question = question;
     }
 }

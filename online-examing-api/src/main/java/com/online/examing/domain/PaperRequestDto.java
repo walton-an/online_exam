@@ -21,6 +21,16 @@ public class PaperRequestDto implements Serializable {
     private List<String> examClass;
     private List<String> examTime;
     private List<Paper> examQuestion;
+    private String managerClass;
+    private int group;
+    private String stuId;
+    private long paperId;
+    private long markUserId;
+    private String UserName;
+    private int score;
+    private long teacherId;
+    private String examClassStr;
+
 
     public int getStatus() {
         return status;
@@ -132,5 +142,77 @@ public class PaperRequestDto implements Serializable {
 
     public void setExamQuestion(List<Paper> examQuestion) {
         this.examQuestion = examQuestion;
+    }
+
+    public String getManagerClass() {
+        return managerClass;
+    }
+
+    public void setManagerClass(String managerClass) {
+        this.managerClass = managerClass;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
+    public String getStuId() {
+        return stuId;
+    }
+
+    public void setStuId(String stuId) {
+        this.stuId = stuId;
+    }
+
+    public long getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(long paperId) {
+        this.paperId = paperId;
+    }
+
+    public long getMarkUserId() {
+        return markUserId;
+    }
+
+    public void setMarkUserId(long markUserId) {
+        this.markUserId = markUserId;
+    }
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(long teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getExamClassStr() {
+        return examClassStr;
+    }
+
+    public void setExamClassStr(String examClassStr) {
+        this.examClassStr = examClassStr;
     }
 }

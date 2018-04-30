@@ -32,6 +32,7 @@
             </el-table-column>
             <el-table-column prop="name" label="姓名" width="100"></el-table-column>
             <el-table-column prop="type" label="身份" width="80" :formatter="formatType"></el-table-column>
+            <el-table-column prop="group" label="组号" width="80" ></el-table-column>
             <el-table-column prop="status" label="状态" width="80" :formatter="formatStatus"></el-table-column>
             <el-table-column prop="managerClasses" label="班级" width="400" :formatter="formatClass"></el-table-column>
             <el-table-column prop="createTime" label="注册时间" :formatter="formatTime" width="180"></el-table-column>
@@ -48,7 +49,7 @@
                 <el-form-item>
                     <el-button type="danger" @click="deleteUsers" :disabled="this.selectedItems.length===0">删除</el-button>
                 </el-form-item>
-                <el-pagination layout="total,prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;"></el-pagination>
+                <el-pagination layout="total,prev, pager, next" @current-change="handleCurrentChange" :page-size="pageSize" :total="total" style="float:right;"></el-pagination>
             </el-form>
         </el-col>
     </section>
@@ -61,7 +62,7 @@
             var g = this.GLOBAL.defaultConfig;
             return {
                 page: 1,
-                pageSize: 15,
+                pageSize: 10,
                 total: 0,
                 selectedItems: "",
                 filters: {
@@ -172,8 +173,9 @@
                     }
                 })
             },
-            handleCurrentChange: function () {
-
+            handleCurrentChange: function (val) {
+                this.page = val;
+                this.getAllUserInfo();
             },
         },
         mounted(){

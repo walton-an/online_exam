@@ -36,7 +36,10 @@ public interface Routes {
     String GET_PAPER = "/getPaper";
     String GET_PAPEER_BY_ID = "/getPaperById";
     String ADD_PAPER_ANSWER = "/addPaperAnswer";
+    String ADD_PAPER_SCORE = "/addPaperScore";
     String DELETE_PAPER_ANSWER = "/deletePaperAnswer";
     String GET_PAPER_ANSWER = "/getPaperAnswer";
+    String GET_PAPER_ANSWER_DETAIL = "getPaperAnswerDetail";
+    String GET_GROUP_PAPER_ANSWER = "/getGroupPaperAnswer";
     String EXIST_PAPER_ANSWER = "/existPaperAnswer";
 }

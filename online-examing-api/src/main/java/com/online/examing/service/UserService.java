@@ -3,6 +3,7 @@ package com.online.examing.service;
 import com.domain.ExamPaper;
 import com.domain.ManagerClass;
 import com.domain.User;
+import com.online.examing.ConstValue;
 import com.online.examing.domain.PaperRequestDto;
 import com.online.examing.domain.UserRequestDto;
 import com.online.examing.repository.UserRepository;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -93,6 +96,7 @@ public class UserService{
         user.setPassword(userRequestDto.getPassword());
         user.setType(userRequestDto.getType());
 
+        //班级
         if(userRequestDto.getGrade()!=""&&userRequestDto.getSchool()!=""&&userRequestDto.getMajor().size()>0&&update) {
             for (int i = 0; i < managerClassList.size(); i++) {
                 //年级、学院都相等时。判断专业名称
@@ -120,6 +124,22 @@ public class UserService{
         user.setUpdateTime(System.currentTimeMillis());
         user.setStatus(1);
         userRepository.save(user);
+
+        //分组
+        if(userRequestDto.getType()==0) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("type").is(0));
+            query.addCriteria(Criteria.where("managerClasses.grade").regex(userRequestDto.getGrade()));
+            query.addCriteria(Criteria.where("managerClasses.school").regex(userRequestDto.getSchool()));
+            query.addCriteria(Criteria.where("managerClasses.major").regex(userRequestDto.getMajor().get(0)));
+            long count = mongoTemplate.count(query, User.class);
+            List<User> userList = mongoTemplate.find(query, User.class);
+            for(int i = 0; i < userList.size(); i++){
+                User user1 =  userList.get(i);
+                user1.setGroup(i % ConstValue.GROUP_SIZE + 1);
+                userRepository.save(user1);
+            }
+        }
         return user.getId();
     }
 

@@ -7,6 +7,7 @@ import adminHome from './views/adminHome.vue'
 //student
 import myExam from './views/student/myExam.vue';
 import myPractice from './views/student/myPractice.vue';
+import markExam from './views/student/markExam.vue';
 import myMark from './views/student/myMark.vue';
 import editStudentPSW from './views/student/editStudentPSW.vue';
 import editStudentInfo from './views/student/improveStudentInfo.vue';
@@ -18,6 +19,7 @@ import editTeacherPSW from './views/teacher/editTeacherPSW.vue';
 import improveTeacherInfo from './views/teacher/improveTeacherInfo.vue';
 import assignPaper from './views/teacher/assignPaper.vue';
 import paperManager from './views/teacher/paperManager.vue';
+import paperAnswer from './views/teacher/paperAnswerManager.vue';
 //admin
 import addUser from './views/admin/addUser.vue'
 import paperAnswerManager from './views/admin/paperAnswerManager.vue'
@@ -48,12 +50,12 @@ let routes = [
     {
         path: '/student',
         component: studentHome,
-        name: '我的考试',
+        name: '我的测试',
         iconCls:'fa el-icon-edit',
         isStudent: true,
         leaf: true,//只有一个节点
         children: [
-            { path: '/myExam', component: myExam, name: '我的考试' },
+            { path: '/myExam', component: myExam, name: '我的测试' },
         ]
     },
     {
@@ -65,6 +67,17 @@ let routes = [
         hidden: true,
         children: [
             { path: '/myPractice', component: myPractice, name: '我的练习' },
+        ]
+    },
+    {
+        path: '/student',
+        component: studentHome,
+        name: '交叉评分',
+        iconCls:'fa fa-file-o',
+        isStudent: true,
+        leaf: true,//只有一个节点
+        children: [
+            { path: '/markExam', component: markExam, name: '交叉评分' },
         ]
     },
     {
@@ -93,27 +106,40 @@ let routes = [
     {
         path: '/teacher',
         component: teacherHome,
-        name: '布置题目',
+        name: '主观题',
         iconCls: 'fa el-icon-edit',
         isTeacher: true,
+        leaf: true,//只有一个节点
         children: [
-            { path: '/choiceQuestion', component: choiceQuestion,  name: "选择题"},
-            { path: '/trueFalseQuestion', component: trueFalseQuestion,  name: "判断题"},
-            { path: '/blankFillingQuestion', component: blankFillingQuestion,  name: "填空题"},
+            { path: '/blankFillingQuestion', component: blankFillingQuestion,  name: "布置题目"},
+            { path: '/choiceQuestion', component: choiceQuestion,  name: "选择题", hidden: true},
+            { path: '/trueFalseQuestion', component: trueFalseQuestion,  name: "判断题", hidden: true},
             { path: '/assignExam', component: blankFillingQuestion,  name: "主观题", hidden: true},
         ]
     },
     {
         path: '/teacher',
         component: teacherHome,
-        name: '考试管理',
+        name: '答题卡管理',
+        iconCls: 'fa fa-user-o',
+        isTeacher: true,
+        leaf: true,//只有一个节点
+        children: [
+            { path: '/paperAnswer', component: paperAnswer,  name: "答题卡管理"},
+        ]
+    },
+    {
+        path: '/teacher',
+        component: teacherHome,
+        name: '测试管理',
         iconCls: 'fa fa-user-o',
         isTeacher: true,
         children: [
-            { path: '/assignPaper', component: assignPaper,  name: "生成试卷"},
-            { path: '/paperManager', component: paperManager,  name: "试卷管理"}
+            { path: '/assignPaper', component: assignPaper,  name: "生成测试"},
+            { path: '/paperManager', component: paperManager,  name: "测试管理"}
         ]
     },
+
     {
         path: '/teacher',
         component: teacherHome,

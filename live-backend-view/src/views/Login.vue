@@ -54,7 +54,7 @@
                           if(res.data.type == 0) {  //学生登录跳转到学生页面
                               this.$router.push({path: '/myExam'});
                           }else if(res.data.type == 1){                 //教师登录跳转到教师页面
-                              this.$router.push({path: '/choiceQuestion'});
+                              this.$router.push({path: '/blankFillingQuestion'});
                           } else if((res.data.type == 2) ){    //管理员
                               this.$router.push({path: '/userManager'});
                           }

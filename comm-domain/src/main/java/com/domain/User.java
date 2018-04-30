@@ -20,6 +20,7 @@ public class User extends BaseEntity{
     private long createTime;
     private long updateTime;
     private int status; //0隐藏，1显示
+    private int group;
 
     public int getStatus() {
         return status;
@@ -83,5 +84,13 @@ public class User extends BaseEntity{
 
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
     }
 }

@@ -55,6 +55,15 @@ public class PaperController {
         return examRepository.findById(Long.parseLong(examId));
     }
 
+    @PostMapping(Routes.ADD_PAPER_SCORE)
+    public RestResult addPaperScore(@RequestBody PaperRequestDto paperRequestDto){
+        RestDoing restDoing = restResult ->{
+            paperAnswerService.addPaperScore(paperRequestDto);
+            restResult.data = RestCode.CD1;
+        };
+        return restDoing.go(null, logger);
+    }
+
     @PostMapping(Routes.ADD_PAPER_ANSWER)
     public RestResult addPaperAnswer(@RequestBody PaperAnswer paperAnswer){
         RestDoing restDoing = restResult ->{
@@ -63,6 +72,7 @@ public class PaperController {
         };
         return restDoing.go(null, logger);
     }
+
 
     @GetMapping(Routes.EXIST_PAPER_ANSWER)
     public PaperAnswer existPaperAnswer(@RequestParam(value = "stuId")String stuId,@RequestParam(value = "paperId")String paperId){
@@ -76,6 +86,23 @@ public class PaperController {
         };
         return restDoing.go(null, logger);
     }
+
+    @GetMapping(Routes.GET_PAPER_ANSWER_DETAIL)
+    public RestResult getPaperAnswerDetail(PaperRequestDto paperRequestDto){
+        RestDoing restDoing = restResult ->{
+            restResult.data =  paperAnswerService.getPaperAnswerDetail(paperRequestDto.getPaperId());
+        };
+        return restDoing.go(null, logger);
+    }
+
+    @GetMapping(Routes.GET_GROUP_PAPER_ANSWER)
+    public RestResult getGroupPaperAnswer(PaperRequestDto paperRequestDto){
+        RestDoing restDoing = restResult ->{
+            restResult.data =  paperAnswerService.getGroupPaperAnswer(paperRequestDto);
+        };
+        return restDoing.go(null, logger);
+    }
+
 
     /**
      * 删除考生答卷

@@ -28,7 +28,7 @@
                 </div>
                 <div v-else>
                     <span align="right" style="color: red;font-weight:bold;" >分数：{{this.score}}</span><br/>
-                    <span align="right" style="color: green;font-weight:bold;" >答案：{{this.answer}}</span>
+                    <span align="right" style="color: green;font-weight:bold;" >正确答案：{{this.answer.toString()}}</span>
                 </div>
                 <div v-for="(question,index) in examQuestions" :key="question.title"><br>
                     {{index+1}}、<span style="font-weight:bold;">{{question.title}}</span><span style="color: red">   （{{question.score}}分）</span><br><br>
@@ -45,7 +45,13 @@
                     <div v-if="question.type === 2">
                         <el-input placeholder="请输入答案，多个答案之间用&隔开" v-model="fullAnswer[index]" clearable></el-input>
                     </div>
-                </div>
+                </div><br>
+                <span align="right" style="color: black;font-weight:bold;" >评分同学：</span><br><br>
+                <el-table :data="markUser" highlight-current-row>
+                    <el-table-column prop="userName" label="名字"></el-table-column>
+                    <el-table-column prop="userIdStr" label="学号"></el-table-column>
+                    <el-table-column prop="score" label="分数"></el-table-column>
+                </el-table>
                 <div v-if="this.ifTest === 0" slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="submitPaper()">交 卷</el-button>
                 </div>
@@ -75,6 +81,7 @@
                 selectAnswers: [],
                 tfAnswers: [],
                 fullAnswer: [],
+                question: {},
                 title: "",
                 minutes:0,
                 seconds:0,
@@ -87,7 +94,9 @@
                 paperName: '',
                 examClass: [],
                 teacherName: '',
+                teacherId: '',
                 timeHandler: "",
+                markUser: [],
             };
         },
         methods:{
@@ -123,6 +132,20 @@
                     });
                     return;
                 }
+                this.paperName = $.extend(true, {}, row).title;//试卷名称
+                this.examClass = $.extend(true, {}, row).examClass; //考试班级
+                this.teacherName =  $.extend(true, {}, row).teacherName; //出卷老师
+                this.teacherId = $.extend(true, {}, row).teacherId;
+                this.paperVisible = true;
+                this.examQuestions = $.extend(true, {}, row).examQuestion;
+                this.question = $.extend(true, {}, row).examQuestion[0];
+                this.title  = $.extend(true, {}, row).title;
+                this.paperId = $.extend(true, {}, row).idStr;
+                this.ifTest = $.extend(true, {}, row).status;
+                this.selectAnswers = [];
+                this.tfAnswers = [];
+                this.fullAnswer = [];
+                this.score = 0;
                 if(new Date().getTime() > endTime ){
                     console.log("考试时间已结束")
                     this.paperId = $.extend(true, {}, row).idStr;
@@ -133,20 +156,9 @@
                             type: 'error'
                         });
                     }, 500);
+//                    this.paperVisible = false;
                     return;
                 }
-                this.paperName = $.extend(true, {}, row).title;//试卷名称
-                this.examClass = $.extend(true, {}, row).examClass; //考试班级
-                this.teacherName =  $.extend(true, {}, row).teacherName; //出卷老师
-                this.paperVisible = true;
-                this.examQuestions = $.extend(true, {}, row).examQuestion;
-                this.title  = $.extend(true, {}, row).title;
-                this.paperId = $.extend(true, {}, row).idStr;
-                this.ifTest = $.extend(true, {}, row).status;
-                this.selectAnswers = [];
-                this.tfAnswers = [];
-                this.fullAnswer = [];
-                this.score = 0;
                 //毫秒数转为分钟数，并四舍五入
                 this.minutes = Math.round(( new Date().getTime() - beginTime ) * 0.0000167);
                 if(this.minutes == 0) {
@@ -182,6 +194,10 @@
                     this.tfAnswers = res.tfAnswers;
                     this.fullAnswer = res.fullAnswer;
                     this.score = res.score;
+                    this.markUser = [];
+                    if(!_.isUndefined(res.markUsers)) {
+                        this.markUser = res.markUsers;
+                    }
                 })
             },
             formatTime: function (row, column) {
@@ -216,7 +232,6 @@
                 });
             },
             submitPaper: function () {
-                console.log("shoudong tiajiao")
                 window.clearInterval(this.timeHandler);
                 this.minutes = 0;
                 this.seconds = 0;
@@ -225,12 +240,15 @@
                     studentName: this.studentName,
                     managerClass: this.managerClass,//学生班级
                     teacherName: this.teacherName,//出卷老师
+                    teacherId: this.teacherId,
                     examClass: this.examClass,
                     paperName: this.paperName,
                     paperId: this.paperId,
                     selectAnswers: this.selectAnswers,
                     tfAnswers: this.tfAnswers,
                     fullAnswer: this.fullAnswer,
+                    group: this.studentInfo.group,
+                    question: this.question,
                 };
                 addPaperAnswer(para).then(res=>{
                     this.$message({
