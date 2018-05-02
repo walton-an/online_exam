@@ -105,9 +105,12 @@ public class PaperAnswerService {
         Query query = new Query();
         int skip = (paperRequestDto.getPage()-1)*paperRequestDto.getPageSize();
         query.skip(skip).limit(paperRequestDto.getPageSize());
-        query.with(new Sort(new Sort.Order(Sort.Direction.DESC,"createTime")));
+        query.with(new Sort(new Sort.Order(Sort.Direction.DESC,"score")));
         if(paperRequestDto.getTeacherId() != 0){
             query.addCriteria(Criteria.where("teacherId").is(paperRequestDto.getTeacherId()));
+        }
+        if(paperRequestDto.getPaperId() != 0){
+            query.addCriteria(Criteria.where("paperId").is(paperRequestDto.getPaperId()));
         }
         if(paperRequestDto.getExamClassStr() != null) {
             List<String> examClass = (List<String>) JSON.parse(paperRequestDto.getExamClassStr());
@@ -115,9 +118,9 @@ public class PaperAnswerService {
         }
         List<PaperAnswer> paperAnswerList = mongoTemplate.find(query, PaperAnswer.class);
 
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "createTime");
-        Sort sort = new Sort(order);
-        Pageable pageable = new PageRequest(paperRequestDto.getPage()-1, paperRequestDto.getPageSize(), sort);//对数据进行分页
+//        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "score");
+//        Sort sort = new Sort(order);
+//        Pageable pageable = new PageRequest(paperRequestDto.getPage()-1, paperRequestDto.getPageSize(), sort);//对数据进行分页
         Map map = new HashMap<>();
         map.put("list", paperAnswerList);
         map.put("size", mongoTemplate.count(query, PaperAnswer.class));

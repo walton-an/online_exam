@@ -4,7 +4,7 @@
             <el-form ref="exam"  :model="examPaper"  label-width="100px" class="demo-ruleForm">
                 <el-form-item  >
                     <el-table :data="allPaperAnswer" highlight-current-row  @selection-change="selsChange" style="width: 100%;" ref="examRef" >
-                        <el-table-column property="paperName" label="试卷名称" width="200"></el-table-column>
+                        <el-table-column property="paperName" label="测试名称" width="200"></el-table-column>
                         <el-table-column property="studentName" label="考生名"></el-table-column>
                         <el-table-column property="managerClass" label="考生班级" ></el-table-column>
                         <el-table-column property="teacherName" label="出卷老师" ></el-table-column>
@@ -29,7 +29,7 @@
                 </div>
                 <div><br>
                     <span style="font-weight:bold;">{{this.detailPaperAnswer.title}}</span><span style="color: red"> （{{this.detailPaperAnswer.score}}分）   </span><br><br>
-                    <el-input placeholder="请输入您的评分" v-model="score" clearable></el-input>
+                    <el-input placeholder="请输入您的评分" v-model="score" clearable v-on:blur="checkScore()"></el-input>
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="close()">关 闭</el-button>
@@ -88,6 +88,16 @@
         methods:{
             num:function (n) {
                 return n<10 ? "0" + n : "" + n
+            },
+            checkScore: function () {
+                if(this.score < 0 || this.score > this.detailPaperAnswer.score){
+                    this.$message({
+                        message: "分数应该在0-" + this.detailPaperAnswer.score + "之间，请重新输入",
+                        type: 'error'
+                    });
+                    this.score = "";
+                    return false;
+                }
             },
             //倒计时
             timer:function () {
@@ -187,21 +197,30 @@
 //                window.clearInterval(this.timeHandler);
 //                this.minutes = 0;
 //                this.seconds = 0;
-                var para = {
-                    markUserId: this.accountNumber,
-                    userName: this.studentName,
-                    score: this.score,
-                    paperId: this.paperId,
-                    stuId: this.stuId,
-                };
-                addPaperScore(para).then(res=>{
-                    this.$message({
-                        message: '评分成功',
-                        type: 'success'
-                    });
-                    this.getStudentPaperAnswer();
-                    this.paperVisible = false;
-                })
+                setTimeout(() => {
+                    if(this.score === ""){
+                        this.$message({
+                            message: '请输入您的评分',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                    var para = {
+                        markUserId: this.accountNumber,
+                        userName: this.studentName,
+                        score: this.score,
+                        paperId: this.paperId,
+                        stuId: this.stuId,
+                    };
+                    addPaperScore(para).then(res=>{
+                        this.$message({
+                            message: '评分成功',
+                            type: 'success'
+                        });
+                        this.getStudentPaperAnswer();
+                        this.paperVisible = false;
+                    })
+                }, 500);
             },
         },
         watch:{

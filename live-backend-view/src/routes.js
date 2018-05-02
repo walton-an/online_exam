@@ -97,8 +97,9 @@ let routes = [
         name: '修改信息',
         iconCls:'fa fa-address-card',
         isStudent: true,
+        leaf: true,//只有一个节点
         children: [
-            { path: '/editStudentInfo', component: editStudentInfo,  name: "完善信息"},
+            // { path: '/editStudentInfo', component: editStudentInfo,  name: "完善信息"},
             { path: '/editStudentPSW', component: editStudentPSW,  name: "修改密码"}
         ]
     },
@@ -121,7 +122,7 @@ let routes = [
         path: '/teacher',
         component: teacherHome,
         name: '答题卡管理',
-        iconCls: 'fa fa-user-o',
+        iconCls: 'fa fa-file-o',
         isTeacher: true,
         leaf: true,//只有一个节点
         children: [
@@ -132,7 +133,7 @@ let routes = [
         path: '/teacher',
         component: teacherHome,
         name: '测试管理',
-        iconCls: 'fa fa-user-o',
+        iconCls: 'fa fa-file-o',
         isTeacher: true,
         children: [
             { path: '/assignPaper', component: assignPaper,  name: "生成测试"},
@@ -156,7 +157,7 @@ let routes = [
         path: '/admin',
         component: adminHome,
         name: '用户管理',
-        iconCls:'fa el-icon-edit',
+        iconCls:'fa fa-address-card',
         isAdmin: true,
         leaf: true,//只有一个节点
         children: [
@@ -167,7 +168,7 @@ let routes = [
         path: '/admin',
         component: adminHome,
         name: '答卷管理',
-        iconCls:'fa el-icon-edit',
+        iconCls:'fa fa-file-o',
         isAdmin: true,
         leaf: true,//只有一个节点
         children: [
@@ -178,7 +179,7 @@ let routes = [
         path: '/admin',
         component: adminHome,
         // name: '添加 / 更新用户',
-        iconCls:'fa fa-file-o',
+        iconCls:'fa fa-address-card',
         isAdmin: true,
         leaf: true,//只有一个节点
         children: [

@@ -50,6 +50,11 @@ public class PaperController {
         return examRepository.findByTeacherId(teacherId);
     }
 
+    @GetMapping(Routes.GET_ALL_PAPER)
+    public List<ExamPaper> getAll(){
+        return examRepository.findAll();
+    }
+
     @GetMapping(Routes.GET_PAPEER_BY_ID)
     public ExamPaper getExamPaperById(@RequestParam(value = "examId")String examId){
         return examRepository.findById(Long.parseLong(examId));

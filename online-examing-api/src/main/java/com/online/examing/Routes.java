@@ -34,6 +34,7 @@ public interface Routes {
     String PAPER_BASE_ROUTE = "/paper";
     String CREATE_UPDATE_PAPER = "/createOrUpdatePaper";
     String GET_PAPER = "/getPaper";
+    String GET_ALL_PAPER = "getAllExamPaper";
     String GET_PAPEER_BY_ID = "/getPaperById";
     String ADD_PAPER_ANSWER = "/addPaperAnswer";
     String ADD_PAPER_SCORE = "/addPaperScore";

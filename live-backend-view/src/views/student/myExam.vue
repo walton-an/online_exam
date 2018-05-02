@@ -4,17 +4,18 @@
             <el-form ref="exam"  :model="examPaper"  label-width="100px" class="demo-ruleForm">
                 <el-form-item  >
                     <el-table :data="allPaper" highlight-current-row  @selection-change="selsChange" style="width: 100%;" ref="examRef" >
-                        <el-table-column property="title" label="试卷名称" width="200"></el-table-column>
-                        <el-table-column property="beginTime" label="考试开始时间" :formatter="formatTime"></el-table-column>
-                        <el-table-column property="endTime" label="考试结束时间" :formatter="formatTime"></el-table-column>
-                        <el-table-column property="testTime" label="考试时长（/分钟）"></el-table-column>
-                        <el-table-column property="status" label="考试状态">
+                        <el-table-column property="title" label="测试名称" width="200"></el-table-column>
+                        <el-table-column property="beginTime" label="测试开始时间" :formatter="formatTime"></el-table-column>
+                        <el-table-column property="endTime" label="测试结束时间" :formatter="formatTime"></el-table-column>
+                        <el-table-column property="testTime" label="测试时长（/分钟）"></el-table-column>
+                        <!--<el-table-column label="分数" :formatter="formatScore"></el-table-column>-->
+                        <el-table-column property="status" label="测试状态">
                             <template scope="scope">
                                 <div v-if="scope.row.status === 0" style="color:blue;cursor: pointer" @click="startTest(scope.$index, scope.row)">
-                                    开始考试
+                                    开始测试
                                 </div>
                                 <div v-if="scope.row.status === 1" style="color:blue;cursor: pointer" @click="checkPaper(scope.$index, scope.row)">
-                                    查看试卷
+                                    查看测试题
                                 </div>
                             </template>
                         </el-table-column>
@@ -27,8 +28,8 @@
                     <span align="right" style="color: red;font-weight:bold;" >剩余时间{{minutes}}:{{seconds}}</span>
                 </div>
                 <div v-else>
-                    <span align="right" style="color: red;font-weight:bold;" >分数：{{this.score}}</span><br/>
-                    <span align="right" style="color: green;font-weight:bold;" >正确答案：{{this.answer.toString()}}</span>
+                    <span align="right" style="color: red;font-weight:bold;" >分数：{{this.score}}分</span><br/><br/>
+                    正确答案：<span align="right" style="color: green;font-weight:bold;" >{{this.answer.toString()}}</span>
                 </div>
                 <div v-for="(question,index) in examQuestions" :key="question.title"><br>
                     {{index+1}}、<span style="font-weight:bold;">{{question.title}}</span><span style="color: red">   （{{question.score}}分）</span><br><br>
@@ -43,11 +44,11 @@
                         <el-radio v-model="tfAnswers[index]" label="F" border size="medium">错</el-radio><br><br>
                     </div>
                     <div v-if="question.type === 2">
-                        <el-input placeholder="请输入答案，多个答案之间用&隔开" v-model="fullAnswer[index]" clearable></el-input>
+                        <el-input v-model="fullAnswer[index]" clearable></el-input>
                     </div>
                 </div><br>
-                <span align="right" style="color: black;font-weight:bold;" >评分同学：</span><br><br>
-                <el-table :data="markUser" highlight-current-row>
+                <span align="right" style="color: black;font-weight:bold;" v-show="markUserVisiable">评分同学：</span><br><br>
+                <el-table :data="markUser" highlight-current-row v-show="markUserVisiable">
                     <el-table-column prop="userName" label="名字"></el-table-column>
                     <el-table-column prop="userIdStr" label="学号"></el-table-column>
                     <el-table-column prop="score" label="分数"></el-table-column>
@@ -87,7 +88,7 @@
                 seconds:0,
                 paperId: "",
                 ifTest: 0,
-                score: 0,
+                score: -1,
                 answer: [],
                 managerClass: '',
                 studentName: sessionStorage.getItem('name'),
@@ -97,6 +98,7 @@
                 teacherId: '',
                 timeHandler: "",
                 markUser: [],
+                markUserVisiable: false
             };
         },
         methods:{
@@ -120,6 +122,12 @@
                     }
 
                 },1000);
+            },
+            formatScore: function () {
+                if(this.score === -1)
+                    return "暂无评分"
+                else
+                    return this.score;
             },
             startTest: function (index, row) {
                 var beginTime = $.extend(true, {}, row).beginTime;
@@ -145,7 +153,8 @@
                 this.selectAnswers = [];
                 this.tfAnswers = [];
                 this.fullAnswer = [];
-                this.score = 0;
+                this.score = -1;
+                this.markUserVisiable = false;
                 if(new Date().getTime() > endTime ){
                     console.log("考试时间已结束")
                     this.paperId = $.extend(true, {}, row).idStr;
@@ -171,6 +180,7 @@
             },
             checkPaper: function (index, row) {
                 this.paperVisible = true;
+                this.markUserVisiable = true;
                 this.examQuestions = $.extend(true, {}, row).examQuestion;
                 this.title  = $.extend(true, {}, row).title;
                 this.paperId = $.extend(true, {}, row).idStr;

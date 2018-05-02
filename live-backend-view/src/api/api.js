@@ -1,6 +1,6 @@
 import axios from 'axios';
-let base = "http://localhost:8081/";
-// let base = "http://39.108.144.48:8081/";
+// let base = "http://localhost:8081/";
+let base = "http://39.108.144.48:8081/";
 
 /******* user *******/
 export const userLogin = params => {
@@ -61,6 +61,9 @@ export const createOrUpdatePaper = params => {
 };
 export const getExamPaper = params => {
     return axios.get(`${base}paper/getPaper`, {params:params}).then(res=>res.data);
+};
+export const getAllExamPaper = () => {
+    return axios.get(`${base}paper/getAllExamPaper`).then(res=>res.data);
 };
 export const getExamPaperById = params => {
     return axios.get(`${base}paper/getPaperById`, {params:params}).then(res=>res.data);

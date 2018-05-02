@@ -3,7 +3,7 @@
         <br><br>
         <el-tabs v-model="visiable" @tab-click="handleClick">
             <el-tab-pane label="选择班级" name="first"></el-tab-pane>
-            <el-tab-pane label="考试时间" name="second"></el-tab-pane>
+            <el-tab-pane label="测试时间" name="second"></el-tab-pane>
             <el-tab-pane label="选择题目" name="third"></el-tab-pane>
             <!--<el-tab-pane label="生成试卷" name="fourth"></el-tab-pane>-->
         </el-tabs>
@@ -12,25 +12,25 @@
             <el-form-item label="试卷名称：" >
                 <el-input v-model="examForm.title" placeholder="请输入试卷名称"></el-input>
             </el-form-item>
-            <el-form-item label="考试班级：" >
+            <el-form-item label="测试班级：" >
                 <el-tag v-for="examClass in examForm.checkedClass" :key="examClass" closable @close="handleCloseClass(examClass)">
                     {{examClass}}
                 </el-tag>
             </el-form-item>
-            <el-form-item label="考试时间：" >
+            <el-form-item label="测试时间：" >
                 {{examForm.examTimeShow}}
             </el-form-item>
-            <el-form-item label="考试时长：" >
-                <el-input v-model="examForm.testTime" placeholder="请输入考试时长（单位分钟）"></el-input>
+            <el-form-item label="测试时长：" >
+                <el-input v-model="examForm.testTime" placeholder="请输入测试时长（单位分钟）"></el-input>
             </el-form-item>
-            <el-form-item label="考试题目：" >
+            <el-form-item label="测试题目：" >
                 <el-table :data="examForm.selectQuestion" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" ref="examRef" >
                     <el-table-column property="type" sortable label="题目类型" width="150" :formatter="formatQuestionType"></el-table-column>
-                    <el-table-column property="title" label="题目" width="200"></el-table-column>
-                    <el-table-column property="selectionA" label="选项A"></el-table-column>
-                    <el-table-column property="selectionB" label="选项B"></el-table-column>
-                    <el-table-column property="selectionC" label="选项C"></el-table-column>
-                    <el-table-column property="selectionD" label="选项D"></el-table-column>
+                    <el-table-column property="title" label="题目" ></el-table-column>
+                    <!--<el-table-column property="selectionA" label="选项A"></el-table-column>-->
+                    <!--<el-table-column property="selectionB" label="选项B"></el-table-column>-->
+                    <!--<el-table-column property="selectionC" label="选项C"></el-table-column>-->
+                    <!--<el-table-column property="selectionD" label="选项D"></el-table-column>-->
                     <el-table-column property="score" label="分值"></el-table-column>
                 </el-table>
             </el-form-item>
@@ -39,7 +39,7 @@
             </el-form-item>
         </el-form>
 
-        <el-dialog title="考试班级" :visible.sync="selectClassVisible">
+        <el-dialog title="测试班级" :visible.sync="selectClassVisible">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
             <div style="margin: 15px 0;"></div>
             <el-checkbox-group v-model="checkedClass" @change="handleCheckedClassChange">
@@ -50,7 +50,7 @@
                 <el-button type="primary" @click="confirmSelectClass">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="考试时间" :visible.sync="examTimeVisiable">
+        <el-dialog title="测试时间" :visible.sync="examTimeVisiable">
             <el-date-picker v-model="examTime" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
             <div slot="footer" class="dialog-footer">
@@ -62,14 +62,14 @@
             <el-table :data="questions" highlight-current-row v-loading="listLoading" @selection-change="selsChange" height="100%" style="width: 100%;" ref="examRef">
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column property="type" label="题目类型" width="80" fixed :formatter="formatQuestionType"></el-table-column>
-                <el-table-column property="title" label="题目" width="200"></el-table-column>
-                <el-table-column property="selectionA" label="选项A" width="200"></el-table-column>
-                <el-table-column property="selectionB" label="选项B" width="200"></el-table-column>
-                <el-table-column property="selectionC" label="选项C" width="200"></el-table-column>
-                <el-table-column property="selectionD" label="选项D" width="200"></el-table-column>
-                <el-table-column property="choiceanswer" label="选择题答案"></el-table-column>
-                <el-table-column property="tfAnswer" label="判断题答案"></el-table-column>
-                <el-table-column property="blankAnswer" label="填空题答案" width="200"></el-table-column>
+                <el-table-column property="title" label="题目"></el-table-column>
+                <!--<el-table-column property="selectionA" label="选项A" width="200"></el-table-column>-->
+                <!--<el-table-column property="selectionB" label="选项B" width="200"></el-table-column>-->
+                <!--<el-table-column property="selectionC" label="选项C" width="200"></el-table-column>-->
+                <!--<el-table-column property="selectionD" label="选项D" width="200"></el-table-column>-->
+                <!--<el-table-column property="choiceanswer" label="选择题答案"></el-table-column>-->
+                <!--<el-table-column property="tfAnswer" label="判断题答案"></el-table-column>-->
+                <el-table-column property="blankAnswer" label="答案"></el-table-column>
                 <el-table-column property="score" label="分值"></el-table-column>
             </el-table>
             <div slot="footer" class="dialog-footer">
@@ -123,7 +123,7 @@
             };
         },
         methods: {
-            //选择考试班级
+            //选择测试班级
             handleCheckAllChange(val) {
                 this.checkedClass = val ? this.myClass : [];
                 this.isIndeterminate = false;
@@ -133,7 +133,7 @@
                 this.checkAll = checkedCount === this.myClass.length;
                 this.isIndeterminate = checkedCount > 0 && checkedCount < this.myClass.length;
             },
-            //取消考试班级
+            //取消测试班级
             handleCloseClass: function (examClass) {
                 this.checkedClass.splice(this.checkedClass.indexOf(examClass), 1);
             },
@@ -146,7 +146,7 @@
                 this.selectClassVisible = false;
                 this.examForm.checkedClass = this.checkedClass;
             },
-            //考试时间
+            //测试时间
             cancelExamTime: function () {
                 this.examTime = [new Date(2018, 1, 1, 9, 0), new Date(2018, 1, 1, 11, 0)];
                 this.examTimeVisiable = false;
@@ -160,7 +160,7 @@
                 this.examForm.examTimeShow = this.examTimeShow;
                 this.examTimeVisiable = false;
             },
-            //考试题目
+            //测试题目
             cancelSelectQuestions: function () {
                 this.selectQuestion = [];
                 this.selectQuestionVisible = false;
@@ -198,19 +198,19 @@
                     return;
                 }else if( this.examForm.checkedClass==""){
                     this.$message({
-                        message: '请先选择考试班级',
+                        message: '请先选择测试班级',
                         type: 'error'
                     });
                     return;
                 }else if(this.examForm.examTimeShow==""){
                     this.$message({
-                        message: '请选择考试时间',
+                        message: '请选择测试时间',
                         type: 'error'
                     });
                     return;
                 }else if(this.examForm.testTime==""){
                     this.$message({
-                        message: '请输入考试时长',
+                        message: '请输入测试时长',
                         type: 'error'
                     });
                     return;
@@ -282,6 +282,8 @@
                    this.checkedClass = res.examClass;
                    var beginTime = this.formatTime(res.beginTime);
                    var endTime = this.formatTime(res.endTime);
+                   this.examTime[0] = beginTime;
+                   this.examTime[1] = endTime;
                    this.examForm.examTimeShow = beginTime + " -- " + endTime;
                    this.examForm.selectQuestion = res.examQuestion;
                    this.buttonName = "更新试卷";
@@ -313,12 +315,12 @@
                 } else if(tab.name == "fourth"){
                     if( this.checkedClass==""){
                         this.$message({
-                            message: '请先选择考试班级',
+                            message: '请先选择测试班级',
                             type: 'error'
                         });
                     }else if(this.examTimeShow==""){
                         this.$message({
-                            message: '请选择考试时间',
+                            message: '请选择测试时间',
                             type: 'error'
                         });
                     }else if(this.selectQuestion==""){

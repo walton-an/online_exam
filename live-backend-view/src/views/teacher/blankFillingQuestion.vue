@@ -62,7 +62,7 @@
                     <el-input v-model="addQuestionsForm.score"></el-input>
                 </el-form-item>
                 <el-form-item label="答案" prop="blankAnswer">
-                    <el-input type="textarea" :rows="3" placeholder="多个答案之间用'&'隔开" v-model="addQuestionsForm.blankAnswer">
+                    <el-input type="textarea" :rows="3" v-model="addQuestionsForm.blankAnswer">
                     </el-input>
                 </el-form-item>
             </el-form>

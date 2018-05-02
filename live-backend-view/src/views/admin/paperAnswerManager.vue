@@ -1,25 +1,22 @@
 <template>
     <section>
-        <!--<el-col :span="24" class="toolbar">-->
-            <!--<el-form :inline="true" :model="filters">-->
-                <!--<el-form-item label="">-->
-                    <!--<el-select v-model="filters.type" placeholder="请选择排序的属性" clearable>-->
-                        <!--<el-option-->
-                                <!--v-for="item in type"-->
-                                <!--:key="item.idStr"-->
-                                <!--:value="item.idStr"-->
-                                <!--:label="item.title"-->
-                        <!--&gt;</el-option>-->
-                    <!--</el-select>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item>-->
-                    <!--<el-input v-model="filters.searchTitle" placeholder="输入搜索的名称"></el-input>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item>-->
-                    <!--<el-button icon="search" @click="searchList">搜索</el-button>-->
-                <!--</el-form-item>-->
-            <!--</el-form>-->
-        <!--</el-col>-->
+        <el-col :span="24" class="toolbar">
+            <el-form :inline="true">
+                <el-form-item label="">
+                    <el-select v-model="paperIdStr" placeholder="请选择测试" clearable>
+                        <el-option
+                                v-for="item in testTitle"
+                                :key="item.idStr"
+                                :value="item.idStr"
+                                :label="item.title"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button icon="search" @click="getAllPaperAnswer">搜索</el-button>
+                </el-form-item>
+            </el-form>
+        </el-col>
 
         <el-table :data="allPaperAnswer" highlight-current-row v-loading="listLoading" @selection-change="selectChange" style="width: 100%;" ref="userRef">
             <el-table-column type="selection" width="55"></el-table-column>
@@ -27,7 +24,7 @@
             <el-table-column prop="studentName" label="姓名" width="100"></el-table-column>
             <el-table-column prop="managerClass" label="班级" width="130"></el-table-column>
             <el-table-column prop="score" label="分数" width="80" ></el-table-column>
-            <el-table-column prop="paperName" label="试卷名称" width="100"></el-table-column>
+            <el-table-column prop="paperName" label="测试名称"></el-table-column>
             <el-table-column prop="teacherName" label="出卷老师" width="120" ></el-table-column>
             <el-table-column prop="examClass" label="考试班级" width="400" :formatter="formatClass"></el-table-column>
             <el-table-column prop="createTime" label="交卷时间" :formatter="formatTime" width="180"></el-table-column>
@@ -51,8 +48,8 @@
 <script>
     import util from '../../common/js/util';
     import {
-        deletePaperAnswer,
-        getAllInfo,
+        deletePaperAnswer, getAllExamPaper,
+        getAllInfo, getExamPaper,
         getPaperAnswer,
         searchUser,
         userDelete,
@@ -66,20 +63,13 @@
                 pageSize: 15,
                 total: 0,
                 selectedItems: "",
-                filters: {
-                    type: "",
-                    searchTitle: ""
-                },
+                paperIdStr: "",
                 operations: {
                     oType: "1",
                     status: "",
                 },
                 status: g.operations,
-                type: [
-                    {idStr: "0", title: "学号"},
-                    {idStr: "1", title: "姓名"},
-                    {idStr: "2", title: "班级"}
-                ],
+                testTitle: [],
                 gameStatus: g.gameStatus,
                 roomStatus: g.roomStatus,
                 rooms: [
@@ -149,34 +139,26 @@
                     page: this.page,
                     pageSize: this.pageSize
                 };
+                if(this.paperIdStr != ""){
+                    para.paperId = this.paperIdStr;
+                }
                 getPaperAnswer(para).then(res=>{
                     this.allPaperAnswer = res.data.list;
                     this.total = res.data.size;
                 })
             },
-            searchList: function () {
-                let para = {
-                    searchType: this.filters.type,
-                    searchTitle: this.filters.searchTitle,
-                    page: this.page,
-                    pageSize: this.pageSize
-                };
-                searchUser(para).then(res=>{
-                    if(res.data.list!=null){
-                        this.allUser = res.data.list;
-                        this.total = res.data.size;
-                    }else{
-                        this.allUser = [];
-                        this.total = 0;
-                    }
-                })
-            },
             handleCurrentChange: function () {
 
+            },
+            getAllPaperTitle: function () {
+                getAllExamPaper().then(res=>{
+                    this.testTitle = res;
+                });
             },
         },
         mounted(){
           this.getAllPaperAnswer();
+          this.getAllPaperTitle();
         },
         components:{}
     }

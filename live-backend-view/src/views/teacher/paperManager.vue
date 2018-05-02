@@ -3,11 +3,12 @@
         <el-form ref="exam"  :model="examPaper"  label-width="100px" class="demo-ruleForm">
             <el-form-item  >
                 <el-table :data="allPaper" highlight-current-row  @selection-change="selsChange" style="width: 100%;" ref="examRef" >
-                    <el-table-column property="title" label="试卷名称" width="200"></el-table-column>
-                    <el-table-column property="beginTime" label="考试开始时间" :formatter="formatTime"></el-table-column>
-                    <el-table-column property="endTime" label="考试结束时间" :formatter="formatTime"></el-table-column>
-                    <el-table-column property="examClass" label="考试班级" :formatter="formatExamClass"></el-table-column>
-                    <el-table-column property="examQuestion" label="考试题目">
+                    <el-table-column property="title" label="测试名称" width="200"></el-table-column>
+                    <el-table-column property="beginTime" label="测试开始时间" :formatter="formatTime"></el-table-column>
+                    <el-table-column property="endTime" label="测试结束时间" :formatter="formatTime"></el-table-column>
+                    <el-table-column property="testTime" label="测试时长(/分钟)"></el-table-column>
+                    <el-table-column property="examClass" label="测试班级" :formatter="formatExamClass"></el-table-column>
+                    <el-table-column property="examQuestion" label="测试题目">
                         <template scope="scope">
                             <div style="color:blue;cursor: pointer" @click="showQuestion(scope.$index, scope.row)">
                                 查看题目
