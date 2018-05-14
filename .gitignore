@@ -23,7 +23,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-/live-backend-view/node_modules/
+/exam-backend-view/node_modules/
 /online-exam.iml
 /mvnw.cmd
 /mvnw
@@ -32,5 +32,5 @@ nbdist/
 /.mvn/
 /comm-utils/target/
 /comm-utils/comm-utils.iml
-/live-backend-view/.idea/
+/exam-backend-view/.idea/
 /online-examing-api/target/

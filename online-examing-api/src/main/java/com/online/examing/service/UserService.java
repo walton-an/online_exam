@@ -126,19 +126,24 @@ public class UserService{
         userRepository.save(user);
 
         //分组
-        if(userRequestDto.getType()==0) {
-            Query query = new Query();
-            query.addCriteria(Criteria.where("type").is(0));
-            query.addCriteria(Criteria.where("managerClasses.grade").regex(userRequestDto.getGrade()));
-            query.addCriteria(Criteria.where("managerClasses.school").regex(userRequestDto.getSchool()));
-            query.addCriteria(Criteria.where("managerClasses.major").regex(userRequestDto.getMajor().get(0)));
-            long count = mongoTemplate.count(query, User.class);
-            List<User> userList = mongoTemplate.find(query, User.class);
-            for(int i = 0; i < userList.size(); i++){
-                User user1 =  userList.get(i);
-                user1.setGroup(i % ConstValue.GROUP_SIZE + 1);
-                userRepository.save(user1);
+        if(!update && userRequestDto.getGroup() == 0) {
+            if (userRequestDto.getType() == 0) {
+                Query query = new Query();
+                query.addCriteria(Criteria.where("type").is(0));
+                query.addCriteria(Criteria.where("managerClasses.grade").regex(userRequestDto.getGrade()));
+                query.addCriteria(Criteria.where("managerClasses.school").regex(userRequestDto.getSchool()));
+                query.addCriteria(Criteria.where("managerClasses.major").regex(userRequestDto.getMajor().get(0)));
+                long count = mongoTemplate.count(query, User.class);
+                List<User> userList = mongoTemplate.find(query, User.class);
+                for (int i = 0; i < userList.size(); i++) {
+                    User user1 = userList.get(i);
+                    user1.setGroup(i % ConstValue.GROUP_SIZE + 1);
+                    userRepository.save(user1);
+                }
             }
+        }else{
+            user.setGroup(userRequestDto.getGroup());
+            userRepository.save(user);
         }
         return user.getId();
     }
@@ -203,7 +208,7 @@ public class UserService{
 
     public Map search(UserRequestDto user){
         Map map = new HashMap();
-        Sort.Order order = new Sort.Order(Sort.Direction.ASC, "createTime");
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "createTime");
         Sort sort = new Sort(order);
         Pageable pageable;
         int size = Math.toIntExact(userRepository.count());

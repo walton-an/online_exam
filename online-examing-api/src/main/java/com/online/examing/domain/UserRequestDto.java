@@ -26,6 +26,7 @@ public class UserRequestDto {
     private int searchType;
     private String searchTitle;
     private List<ManagerClass> managerClasses;
+    private int group;
 
     public Long getOldAccountNum() {
         return oldAccountNum;
@@ -157,5 +158,13 @@ public class UserRequestDto {
 
     public void setSearchTitle(String searchTitle) {
         this.searchTitle = searchTitle;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
     }
 }

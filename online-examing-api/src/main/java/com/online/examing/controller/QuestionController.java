@@ -54,7 +54,7 @@ public class QuestionController {
     @GetMapping(Routes.GET_QUESTIOND_LIST)
     public RestResult getQuestionList(PaperRequestDto paperRequestDto){
         RestDoing restDoing = restResult ->{
-            restResult.data = paperService.getPaperList(paperRequestDto);
+            restResult.data = paperService.getQuestionList(paperRequestDto);
         };
         return restDoing.go(null, logger);
     }

@@ -9,6 +9,7 @@ import com.online.examing.service.ExamService;
 import com.online.examing.service.PaperAnswerService;
 import com.online.examing.repository.ExamRepository;
 import com.online.examing.repository.PaperAnswerRepository;
+import com.online.examing.service.PaperService;
 import com.utils.RestCode;
 import com.utils.RestDoing;
 import com.utils.RestResult;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: walton
@@ -35,6 +37,8 @@ public class PaperController {
     private PaperAnswerService paperAnswerService;
     @Autowired
     private PaperAnswerRepository paperAnswerRepository;
+    @Autowired
+    private PaperService paperService;
 
     Logger logger = LoggerFactory.getLogger(PaperController.class);
     /**
@@ -46,8 +50,15 @@ public class PaperController {
     }
 
     @GetMapping(Routes.GET_PAPER)
-    public List<ExamPaper> getExam(@RequestParam(value = "teacherId")long teacherId){
-        return examRepository.findByTeacherId(teacherId);
+    public Map getExam(PaperRequestDto paperRequestDto){
+        Map map = paperService.getExamPaper(paperRequestDto);
+        return map;
+//        List<ExamPaper> list;
+//        if(teacherId == 0)
+//            list = examRepository.findAll();
+//        else
+//            list = examRepository.findByTeacherId(teacherId);
+//        return list;
     }
 
     @GetMapping(Routes.GET_ALL_PAPER)
