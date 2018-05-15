@@ -1,6 +1,6 @@
 import axios from 'axios';
-// let base = "http://localhost:8081/";
-let base = "http://39.108.144.48:8081/";
+let base = "http://localhost:8081/";
+// let base = "http://39.108.144.48:8081/";
 
 /******* user *******/
 export const userLogin = params => {
