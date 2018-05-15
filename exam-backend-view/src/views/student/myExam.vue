@@ -8,7 +8,7 @@
                         <el-table-column property="beginTime" label="测试开始时间" :formatter="formatTime"></el-table-column>
                         <el-table-column property="endTime" label="测试结束时间" :formatter="formatTime"></el-table-column>
                         <el-table-column property="testTime" label="测试时长（/分钟）"></el-table-column>
-                        <!--<el-table-column label="分数" :formatter="formatScore"></el-table-column>-->
+                        <el-table-column property="score" label="分数" :formatter="formatDetailScore"></el-table-column>
                         <el-table-column property="status" label="测试状态">
                             <template scope="scope">
                                 <div v-if="scope.row.status === 0" style="color:blue;cursor: pointer" @click="startTest(scope.$index, scope.row)">
@@ -128,6 +128,12 @@
                     return "暂无评分"
                 else
                     return this.score;
+            },
+            formatDetailScore: function (row, column) {
+                if(row[column.property]  === -1)
+                    return "暂无评分"
+                else
+                    return row[column.property];
             },
             startTest: function (index, row) {
                 var beginTime = $.extend(true, {}, row).beginTime;

@@ -88,16 +88,16 @@
                     type: [
                         { required: true, message: '请选择身份', trigger: 'change' }
                     ],
-                    group: [
-                        { required: true, message: '请输入组号', trigger: 'change' }
+//                    group: [
+//                        { required: true, message: '请输入组号', trigger: 'change' }
+//                    ],
+                    school: [
+                        { type:"integer", required: true, message: '请选择学院、专业', trigger: 'change' }
                     ],
-//                    school: [
-//                        { type:"integer", required: true, message: '请选择学院、专业', trigger: 'change' }
-//                    ],
-//                    grade: [
-//                        { required: true, message: '请选择年级', trigger: 'blur' },
-//                        { required: true, message: '请选择年级', trigger: 'change' }
-//                    ],
+                    grade: [
+                        { required: true, message: '请选择年级', trigger: 'blur' },
+                        { required: true, message: '请选择年级', trigger: 'change' }
+                    ],
                 },
                 checked: true,
                 accountNumber: "",
@@ -118,7 +118,7 @@
                     accountNumber: value,
                 };
                 checkAccountNumber(para).then((res) => {
-                    if (res.data === true){
+                    if (res.data){
                         callback();
                     }else {
                         callback('该学号已存在!');
@@ -141,12 +141,14 @@
                         //获取表单参数
                         let userParas = Object.assign({}, this.userForm);
                         var schoolName = "";
+                        console.log("进来了")
                         for(var i = 0; i< this.school.length;i++){
                             if(this.school[i].idStr===this.userForm.school){
                                 schoolName = this.school[i].title;
                                 break;
                             }
                         }
+                        console.log("进来了2")
                         userParas.school = schoolName;
                         userParas.managerClasses = this.updateClasses;
                         userParas.oldAccountNum = this.accountNumber;

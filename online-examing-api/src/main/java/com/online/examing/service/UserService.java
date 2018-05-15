@@ -2,6 +2,7 @@ package com.online.examing.service;
 
 import com.domain.ExamPaper;
 import com.domain.ManagerClass;
+import com.domain.PaperAnswer;
 import com.domain.User;
 import com.online.examing.ConstValue;
 import com.online.examing.domain.PaperRequestDto;
@@ -242,8 +243,13 @@ public class UserService{
     public List<ExamPaper> getPaper(String  examClass,String stuId){
         List<ExamPaper> examPaperList = examRepository.findByExamClassContains(examClass);
         for(ExamPaper examPaper : examPaperList){
-            if(paperAnswerRepository.findByStuIdAndPaperId(Long.valueOf(stuId), Long.valueOf(examPaper.getIdStr()))!=null)
+            PaperAnswer paperAnswer = paperAnswerRepository.findByStuIdAndPaperId(Long.valueOf(stuId), Long.valueOf(examPaper.getIdStr()));
+            if(paperAnswer != null){
                 examPaper.setStatus(1);
+                examPaper.setScore(paperAnswer.getScore());
+            }else {
+                examPaper.setScore(-1);
+            }
         }
         return examPaperList;
     }

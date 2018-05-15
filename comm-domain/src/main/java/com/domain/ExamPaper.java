@@ -20,6 +20,7 @@ public class ExamPaper extends BaseEntity {
     private Integer status; //0代表未考试，1代表已考完
     private long teacherId; //出题老师
     private String teacherName;
+    private double score;
 
     public String getTeacherName() {
         return teacherName;
@@ -91,5 +92,13 @@ public class ExamPaper extends BaseEntity {
 
     public void setTestTime(int testTime) {
         this.testTime = testTime;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }
